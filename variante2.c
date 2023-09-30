@@ -3,7 +3,7 @@
 #include <string.h>
 #include "tileblaster.h"
 
-Matriz *GravidadeVertical(Matriz *matrix)
+Matriz *GravidadeVertical(Matriz *matrix) // começar a ler por baixo e escreve na lista apenas numeros validos quando chegar a cima vai para a proxima coluna
 {
     int branco = 1;
     Matriz *aux = matrix->head;
