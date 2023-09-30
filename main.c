@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 	matrix = read_file(filename); // chamar a função de leitura do ficheiro
 	Node *aux = matrix->head, *auxT;
 
-	while (aux != NULL)
+	/*while (aux != NULL)
 	{
 
 		for (int i = 0; i < matrix->colu; i++)
@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 		printf("\n");
 		auxT = aux->next;
 		aux = auxT;
-	}
+	}*/
 
 	return 0;
 }
