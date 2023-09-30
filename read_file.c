@@ -52,6 +52,8 @@ Matriz *read_file(const char *filename)
 		if (matrix->head == NULL)
 		{
 			matrix->head = newNode;
+			newNode->next = NULL;
+			newNode->prev = NULL;
 			continue;
 		}
 		Node *aux = matrix->head, *auxT = NULL;
@@ -61,6 +63,7 @@ Matriz *read_file(const char *filename)
 			aux = auxT->next;
 		}
 		auxT->next = newNode;
+		newNode->prev = auxT;
 	}
 
 	fclose(fp);

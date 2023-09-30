@@ -10,6 +10,7 @@ typedef struct Node
     int cols;  // Numero de colunas
     int indice;
     struct Node *next; // Ponteiro para a proxima linha
+    struct Node *prev; //Ponteiro para a linha anterior
 } Node;
 
 typedef struct matriz
@@ -22,6 +23,7 @@ typedef struct matriz
     int variante;
 
 } Matriz;
+
 
 Matriz *read_file(const char *filename);
 Matriz *variante1(Matriz *matrix);
