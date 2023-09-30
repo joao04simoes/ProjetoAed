@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "tileblaster.h"
-// Matriz *read_file(const char *filename);
 
 int main(int argc, char *argv[])
 {
@@ -29,6 +28,11 @@ int main(int argc, char *argv[])
 		printf("\n");
 		auxT = aux->next;
 		aux = auxT;
+	}
+
+	if (matrix->variante == 1)
+	{
+		variante1(matrix);
 	}
 
 	return 0;

@@ -20,6 +20,7 @@ Matriz *read_file(const char *filename)
 	if (fgets(firstLine, sizeof(firstLine), fp) != NULL)
 		sscanf(firstLine, "%d %d %d %d %d", &matrix->rows, &matrix->colu, &matrix->cordX, &matrix->cordY, &matrix->variante);
 	matrix->head = NULL;
+	int indiRow = matrix->rows;
 	while (fgets(buffer, sizeof(buffer), fp) != NULL)
 	{
 
@@ -38,7 +39,6 @@ Matriz *read_file(const char *filename)
 			exit(EXIT_FAILURE);
 		}
 
-		int indiRow = matrix->rows;
 		newNode->indice = indiRow;
 		indiRow--;
 		int i = 0;

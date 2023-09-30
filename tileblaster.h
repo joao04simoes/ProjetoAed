@@ -24,5 +24,6 @@ typedef struct matriz
 } Matriz;
 
 Matriz *read_file(const char *filename);
+Matriz *variante1(Matriz *matrix);
 
 #endif
