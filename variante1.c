@@ -6,33 +6,21 @@
 Matriz *variante1(Matriz *matrix)
 {
     Node *aux = matrix->head, *auxT;
-    int encotrado = 0;
-    int i = 0;
+    //int encotrado = 0;
+    //int i = 0;
 
-    while (aux != NULL && encotrado == 0)
+    while (aux != NULL)
     {
-        i = 0;
-        printf("indice aux %d\n", aux->indice);
-        while (i < matrix->colu && encotrado == 0)
-        {
-            printf(" %d == %d  e %d == %d\n", aux->indice, matrix->cordY, i + 1, matrix->cordX);
-            printf("ciuclo i\n");
-            if (aux->indice == matrix->cordY && i + 1 == matrix->cordX)
-            {
-                encotrado = 1;
-                printf("encontrou\n");
-                break;
-            }
-            i++;
-        }
-        if (encotrado == 1)
-        {
+        if(aux->indice == matrix->cordX)
             break;
-        }
-
+    
         auxT = aux->next;
         aux = auxT;
     }
+
+    //aux->data[matrix->cordY-1];
+    
+
 
     return matrix;
 }
