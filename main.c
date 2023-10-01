@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 
 		for (int i = 0; i < matrix->colu; i++)
 		{
-			printf("%d ", aux->data[i]);
+			printf("%d ", aux->data[i]); // a tabela esta a aprecer invertida primeira linha é a coluna
 		}
 		printf("\n");
 		auxT = aux->next;

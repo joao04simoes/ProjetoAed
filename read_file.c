@@ -20,8 +20,9 @@ Matriz *read_file(const char *filename)
 	if (fgets(firstLine, sizeof(firstLine), fp) != NULL)
 		sscanf(firstLine, "%d %d %d %d %d", &matrix->rows, &matrix->colu, &matrix->cordX, &matrix->cordY, &matrix->variante);
 	matrix->head = NULL;
-	int indiRow = matrix->rows;
-	while (fgets(buffer, sizeof(buffer), fp) != NULL)
+	int indicolu = matrix->colu;
+
+	for (int i = 0; i < matrix->colu; i++)
 	{
 
 		Node *newNode = (Node *)malloc(sizeof(Node));
@@ -38,17 +39,11 @@ Matriz *read_file(const char *filename)
 			perror("Memory allocation failed");
 			exit(EXIT_FAILURE);
 		}
-
-		newNode->indice = indiRow;
-		indiRow--;
+		newNode->next = NULL;
+		newNode->prev = NULL;
+		newNode->indice = indicolu;
+		indicolu--;
 		int i = 0;
-		char *token = strtok(buffer, " ");
-		while (token != NULL)
-		{
-			newNode->data[i] = atoi(token);
-			token = strtok(NULL, " ");
-			i++;
-		}
 		if (matrix->head == NULL)
 		{
 			matrix->head = newNode;
@@ -64,6 +59,25 @@ Matriz *read_file(const char *filename)
 		}
 		auxT->next = newNode;
 		newNode->prev = auxT;
+	}
+
+	int i = 0;
+	while (fgets(buffer, sizeof(buffer), fp) != NULL)
+	{
+
+		printf("loop limhas\n");
+		char *token = strtok(buffer, " ");
+		Node *aux = matrix->head, *auxT = NULL;
+
+		for (int j = 1; j <= matrix->colu; j++)
+		{
+			printf("novo dado %d\n", atoi(token));
+			aux->data[i] = atoi(token);
+			auxT = aux->next;
+			aux = auxT;
+			token = strtok(NULL, " ");
+		}
+		i++;
 	}
 
 	fclose(fp);

@@ -11,7 +11,7 @@ Matriz *variante1(Matriz *matrix)
 
     while (aux != NULL)
     {
-        if (aux->indice == matrix->cordX)
+        if (aux->indice == matrix->cordY)
             break;
 
         auxT = aux->next;

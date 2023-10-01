@@ -6,8 +6,8 @@
 #include <string.h>
 typedef struct Node
 {
-    int *data; // Ponteiro para a linha
-    int cols;  // Numero de colunas
+    int *data;  // Ponteiro para a coluna
+    int linhas; // Numero de colunas
     int indice;
     struct Node *next; // Ponteiro para a proxima linha
     struct Node *prev; // Ponteiro para a linha anterior
