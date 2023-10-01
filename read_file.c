@@ -43,7 +43,7 @@ Matriz *read_file(const char *filename)
 		newNode->prev = NULL;
 		newNode->indice = indicolu;
 		indicolu++;
-		int i = 0;
+		//int i = 0;
 		if (matrix->head == NULL)
 		{
 			matrix->head = newNode;
@@ -65,11 +65,11 @@ Matriz *read_file(const char *filename)
 	while (fgets(buffer, sizeof(buffer), fp) != NULL)
 	{
 
-		printf("loop limhas\n");
+		printf("loop linhas\n");
 		char *token = strtok(buffer, " ");
 		Node *aux = matrix->head, *auxT = NULL;
 
-		for (int j = 1; j <= matrix->colu; j++)
+		for (int j = 1; j <= matrix->colu; j++) //se estamos a por em cada posição do vetor os numeros das colunas nao deviamos ter l <= matrix->rows, acaba por ser o mesmo.
 		{
 			printf("novo dado %d\n", atoi(token));
 			aux->data[i] = atoi(token);
