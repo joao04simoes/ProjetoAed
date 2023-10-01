@@ -18,9 +18,9 @@ Matriz *read_file(const char *filename)
 	}
 
 	if (fgets(firstLine, sizeof(firstLine), fp) != NULL)
-		sscanf(firstLine, "%d %d %d %d %d", &matrix->rows, &matrix->colu, &matrix->cordX, &matrix->cordY, &matrix->variante);
+		sscanf(firstLine, "%d %d %d %d %d", &matrix->rows, &matrix->colu, &matrix->variante, &matrix->cordX, &matrix->cordY);
 	matrix->head = NULL;
-	int indicolu = matrix->colu;
+	int indicolu = 1;
 
 	for (int i = 0; i < matrix->colu; i++)
 	{
@@ -42,7 +42,7 @@ Matriz *read_file(const char *filename)
 		newNode->next = NULL;
 		newNode->prev = NULL;
 		newNode->indice = indicolu;
-		indicolu--;
+		indicolu++;
 		int i = 0;
 		if (matrix->head == NULL)
 		{

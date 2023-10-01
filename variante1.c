@@ -11,9 +11,12 @@ Matriz *variante1(Matriz *matrix)
 
     while (aux != NULL)
     {
+        printf("loop procura\n");
         if (aux->indice == matrix->cordY)
+        {
+            printf(" indice %d e cord %d \n ", aux->indice, matrix->cordY);
             break;
-
+        }
         auxT = aux->next;
         aux = auxT;
     }
