@@ -3,10 +3,92 @@
 #include <string.h>
 #include "tileblaster.h"
 
+
+
+static int counter = 0;
+
+//rever!!!
+void procura_cima(Node *aux, Matriz *matrix) {
+    int i = (matrix->rows == matrix->cordX) ? 0 : (matrix->rows - matrix->cordX);
+    int j = 1;
+    while (i - j >= 0) {
+        if (aux->data[i] == aux->data[i - j]) {
+            
+            push(&(aux->data[i - j]));
+            counter++;
+            j++;
+        } 
+        else {
+            break;  // Stop if not the same color
+        }
+    }
+}
+
+
+//rever!!!
+void procura_baixo(Node *aux, Matriz *matrix) {
+    int i = (matrix->rows == matrix->cordX) ? 0 : (matrix->rows - matrix->cordX);
+    int j = 1;
+    while ((i + j) < matrix->rows) {
+        if (aux->data[i] == aux->data[i + j]) {
+            
+            push(&(aux->data[i + j]));
+            counter++;
+            j++;
+        }
+        else {
+            break;  // Stop if not the same color
+        }
+    }
+}
+
+
+//rever!!!
+void procura_direita(Node *aux, Matriz *matrix) {
+    int i = (matrix->rows == matrix->cordX) ? 0 : (matrix->rows - matrix->cordX);
+    Node *ptr;
+    while (aux->next != NULL) {
+        if (aux->data[i] == aux->next->data[i]) {
+           
+            push(&(aux->next->data[i]));
+            counter++;
+            procura_cima(aux->next, matrix);
+            procura_baixo(aux->next, matrix);
+        } 
+        else {
+            break;  // Stop if not the same color
+        }
+        ptr = aux->next;
+        aux = ptr;
+    }
+}
+
+
+//rever!!!
+void procura_esquerda(Node *aux, Matriz *matrix) {
+    int i = (matrix->rows == matrix->cordX) ? 0 : (matrix->rows - matrix->cordX);
+    Node *ptr;
+    while (aux->prev != NULL) {
+        if (aux->data[i] == aux->prev->data[i]) {
+           
+            push(&(aux->prev->data[i]));
+            counter++;
+            procura_cima(aux->prev, matrix);
+            procura_baixo(aux->prev, matrix);
+        }
+        else {
+            break;  // Stop if not the same color
+        }
+        ptr = aux->prev;
+        aux = ptr;
+    }
+}
+
+
+
 int variante1(Matriz *matrix)
 {
-    Node *aux = matrix->head, *auxT, *ptr;
-    int count = 0;
+    Node *aux = matrix->head, *auxT;
     int valor_mancha;
 
 
@@ -15,44 +97,20 @@ int variante1(Matriz *matrix)
         printf("loop procura\n");
         if (aux->indice == matrix->cordY)
         {
-            printf("indice %d e cord %d e %d \n ", aux->indice, matrix->cordY, aux->data[...]); //quero dar print ao numero que é suposto localizarmos
-            break;                                                                              //assim posso usa-lo para fazer a procura da mancha
+            printf("indice %d e cord %d \n ", aux->indice, matrix->cordY);
+            break;                                                                              
         }
         auxT = aux->next;
         aux = auxT;
     }
-    // aux->data[matrix->cordY-1];
 
-    //procurar para a direita , precisamos de verificar se estamos fora ou dentro da matriz ? Nao pus nenhuma condição que indique isso...
-    if(aux->next->data[...] == aux->data[...]) {
-        ptr = &(aux->next->data[...]);
-        push(ptr);
-        count++;
-    }
-        
-    
-    //procurar para esquerda
-    if(aux->prev->data[...] == aux->data[...]) {
-        ptr = &(aux->prev->data[...]);
-        push(ptr);
-        count++;
-    }
+    procura_cima(aux, matrix);
+    procura_baixo(aux, matrix);
+    procura_direita(aux, matrix);
+    procura_esquerda(aux, matrix);
 
-    //procurar para baixo
-    if(aux->data[...] == aux->data[...+1]) {
-        ptr = aux->data[...+1];
-        push(ptr);
-        count++;
-    }
 
-    //procurar para cima
-    if(aux->data[...] == aux->data[...-1]) {
-        ptr = aux->data[...-1];
-        push(ptr);
-        count++;
-    }
-
-    valor_mancha = count*(count-1);
+    valor_mancha = counter * (counter -1);
 
     return valor_mancha;  //como a variante 1 so pede o valor da mancha, para ja isto pode ficar assim, damos apenas return do valor da mancha 
 }

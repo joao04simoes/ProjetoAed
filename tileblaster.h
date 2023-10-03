@@ -25,14 +25,18 @@ typedef struct matriz
 } Matriz;
 
 struct pilha_node {
-    Node *pointer_tp;
+    int *address;
     struct pilha_node *link;
 } *top = NULL;
 
 
 Matriz *read_file(const char *filename);
+void procura_cima(Node *aux, Matriz *matrix);
+void procura_baixo(Node *aux, Matriz *matrix);
+void procura_direita(Node *aux, Matriz *matrix);
+void procura_esquerda(Node *aux, Matriz *matrix);
 int variante1(Matriz *matrix);
-void push(Node *ptr);
+void push(int *ptr);
 Node *pop();
 int isEmpty();
 Node *peek();

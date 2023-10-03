@@ -5,7 +5,7 @@
 
 
 //vai criando os elementos da pilha de forma a que o ultimo a entrar fique no topo, assim é mais facil de remover, passa a ser O(1)
-void push (Node *ptr) {
+void push (int *ptr) {
     
     struct pilha_node *new_p = (struct pilha_node *)malloc(sizeof(struct pilha_node));
 
@@ -14,7 +14,7 @@ void push (Node *ptr) {
         return;  // Exit with an error code
     }
 
-    new_p->pointer_tp = ptr;
+    new_p->address = ptr;
     new_p->link = NULL;
     new_p->link = top;
     top = new_p;
@@ -29,7 +29,7 @@ Node *pop() {
        return NULL; 
     }
 
-    Node *pt = temp->pointer_tp;
+    Node *pt = temp->address;
     top = top->link;
     free(temp);
     temp = NULL;
@@ -49,7 +49,7 @@ Node *peek() {
         fprintf(stderr, "A pilha encontra-se vazia.\n");
         return NULL; 
         }
-    return top->pointer_tp;
+    return top->address;
 }
 
 /*O que eu estava a pensar era fazer uma pilha que guarde os apontadores para os elementos da matriz, assim nao temos de estar a percorrer a matriz toda sempre que queremos remover
