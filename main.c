@@ -17,6 +17,10 @@ int main(int argc, char *argv[])
 
 	matrix = read_file(filename); // chamar a função de leitura do ficheiro
 	Node *aux = matrix->head, *auxT;
+	if (matrix->variante == 1)
+	{
+		matrix = variante1(matrix);
+	}
 
 	while (aux != NULL)
 	{
