@@ -63,7 +63,7 @@ void procura_direita(Node *aux, Matriz *matrix) {
     }
 }
 
-
+//olaaaaaaaaaaaaaaaaaaaaaaaaaaa
 //rever!!!
 void procura_esquerda(Node *aux, Matriz *matrix) {
     int i = (matrix->rows == matrix->cordX) ? 0 : (matrix->rows - matrix->cordX);
