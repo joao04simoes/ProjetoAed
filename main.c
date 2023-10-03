@@ -34,10 +34,5 @@ int main(int argc, char *argv[])
 		aux = auxT;
 	}
 
-	if (matrix->variante == 1)
-	{
-		variante1(matrix);
-	}
-
 	return 0;
 }

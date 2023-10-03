@@ -23,20 +23,22 @@ void push(Node *ptr, int indice, int cor, Matriz *matrix)
     new_p->link = NULL;
     new_p->link = top;
     top = new_p;
+    printf("push \n");
 }
 
 void pop()
 {
+
     struct pilha_node *temp;
     temp = top;
-
+    printf("poppppppp\n");
     if (isEmpty())
     {
         fprintf(stderr, "A pilha encontra-se vazia.\n");
         return;
     }
-    procurarMancha(temp->ptr, temp->indice, temp->cor, temp->matrix);
     top = top->link;
+    procurarMancha(temp->ptr, temp->indice, temp->cor, temp->matrix);
     free(temp);
     temp = NULL;
     return;

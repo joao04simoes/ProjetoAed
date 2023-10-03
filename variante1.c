@@ -104,7 +104,7 @@ Matriz *variante1(Matriz *matrix)
     while (aux != NULL)
     {
         printf("loop procura\n");
-        if (aux->indice == matrix->cordY - 1)
+        if (aux->indice == matrix->cordY)
         {
             printf("indice %d e cord %d \n ", aux->indice, matrix->cordY);
             break;
@@ -113,20 +113,25 @@ Matriz *variante1(Matriz *matrix)
         aux = auxT;
     }
 
-    indice = matrix->cordX - 1;
+    indice = matrix->rows - matrix->cordX;
+    printf("indice %d\n", indice);
     cor = aux->data[indice];
+    printf("a cor eeeeeeeeeeeeeeeee %d\n", aux->data[indice]);
     aux->data[indice] = -1;
+    printf("antes de procurar\n");
     matrix = procurarMancha(aux, indice, cor, matrix);
 
     return matrix; // como a variante 1 so pede o valor da mancha, para ja isto pode ficar assim, damos apenas return do valor da mancha
 }
 Matriz *procurarMancha(Node *ptr, int indice, int cor, Matriz *matrix)
 {
+    printf("procura\n");
     // procurar para cima
     if (indice > 0)
     {
         if (cor == ptr->data[indice - 1])
         {
+            printf("cimaaaaaaa\n");
             ptr->data[indice - 1] = -1;
             push(ptr, indice, cor, matrix);
         }
@@ -137,6 +142,7 @@ Matriz *procurarMancha(Node *ptr, int indice, int cor, Matriz *matrix)
     {
         if (cor == ptr->data[indice + 1])
         {
+            printf("baixoooooo\n");
             ptr->data[indice + 1] = -1;
             push(ptr, indice, cor, matrix);
         }
@@ -147,6 +153,7 @@ Matriz *procurarMancha(Node *ptr, int indice, int cor, Matriz *matrix)
     {
         if (cor == ptr->prev->data[indice])
         {
+            printf("esquerdaaaaaaa\n");
             ptr->prev->data[indice] = -1;
             push(ptr, indice, cor, matrix);
         }
@@ -157,6 +164,7 @@ Matriz *procurarMancha(Node *ptr, int indice, int cor, Matriz *matrix)
     {
         if (cor == ptr->next->data[indice])
         {
+            printf("direita\n");
             ptr->next->data[indice] = -1;
             push(ptr, indice, cor, matrix);
         }
