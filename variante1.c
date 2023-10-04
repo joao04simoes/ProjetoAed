@@ -100,7 +100,8 @@ Matriz *variante1(Matriz *matrix)
     Node *aux = matrix->head, *auxT;
     int indice = 0;
     int cor = 0;
-
+    int flag;
+    printf("variante1\n");
     while (aux != NULL)
     {
         printf("loop procura\n");
@@ -117,58 +118,65 @@ Matriz *variante1(Matriz *matrix)
     printf("indice %d\n", indice);
     cor = aux->data[indice];
     printf("a cor eeeeeeeeeeeeeeeee %d\n", aux->data[indice]);
-    aux->data[indice] = -1;
-    printf("antes de procurar\n");
-    matrix = procurarMancha(aux, indice, cor, matrix);
+    if(aux->data[indice] == -1)
+        return matrix;
 
-    return matrix; // como a variante 1 so pede o valor da mancha, para ja isto pode ficar assim, damos apenas return do valor da mancha
+
+    printf("antes de procurar\n");
+    if ((flag= procurarMancha(aux, indice, cor, matrix))== 1){
+        aux->data[indice] = -1;
+        matrix->t_mancha++;
+    }
+
+    return matrix;
 }
-Matriz *procurarMancha(Node *ptr, int indice, int cor, Matriz *matrix)
+
+
+int procurarMancha(Node *ptr, int indice, int cor, Matriz *matrix)
 {
-    printf("procura\n");
+    int flag=0;
+   // printf("procura\n");
+
     // procurar para cima
-    if (indice > 0)
+    if (indice > 0 && cor == ptr->data[indice - 1])
     {
-        if (cor == ptr->data[indice - 1])
-        {
-            printf("cimaaaaaaa\n");
-            ptr->data[indice - 1] = -1;
-            push(ptr, indice, cor, matrix);
-        }
+        //printf("cimaaaaaaa\n");
+        ptr->data[indice - 1] = -1;
+        matrix->t_mancha++;
+        flag=1;
+        push(ptr, indice - 1, cor, matrix);
     }
 
     // procurar para baixo
-    if (indice < matrix->cordX)
+    if (indice < matrix->rows-1 && cor == ptr->data[indice + 1])
     {
-        if (cor == ptr->data[indice + 1])
-        {
-            printf("baixoooooo\n");
-            ptr->data[indice + 1] = -1;
-            push(ptr, indice, cor, matrix);
-        }
+       // printf("baixoooooo\n");
+        ptr->data[indice + 1] = -1;
+        matrix->t_mancha++;
+        flag=1;
+        push(ptr, indice + 1, cor, matrix);
     }
 
     // procurar para a esquerda
-    if (ptr != matrix->head)
+    if (ptr != matrix->head && cor == ptr->prev->data[indice])
     {
-        if (cor == ptr->prev->data[indice])
-        {
-            printf("esquerdaaaaaaa\n");
-            ptr->prev->data[indice] = -1;
-            push(ptr, indice, cor, matrix);
-        }
+        //printf("esquerdaaaaaaa\n");
+        ptr->prev->data[indice] = -1;
+        matrix->t_mancha++;
+        flag=1;
+        push(ptr->prev, indice, cor, matrix);
     }
 
     // procurar para a direita
-    if (ptr->next != NULL)
+    if ( ptr->next != NULL && cor == ptr->next->data[indice])
     {
-        if (cor == ptr->next->data[indice])
-        {
-            printf("direita\n");
-            ptr->next->data[indice] = -1;
-            push(ptr, indice, cor, matrix);
-        }
+        //printf("direita\n");
+        ptr->next->data[indice] = -1;
+        matrix->t_mancha++;
+        flag=1;
+        push(ptr->next, indice, cor, matrix);
     }
-    pop();
-    return matrix;
+
+    return flag ;
 }
+

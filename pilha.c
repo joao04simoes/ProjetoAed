@@ -23,24 +23,28 @@ void push(Node *ptr, int indice, int cor, Matriz *matrix)
     new_p->link = NULL;
     new_p->link = top;
     top = new_p;
-    printf("push \n");
+    //printf("push \n");
 }
 
 void pop()
 {
-
-    struct pilha_node *temp;
-    temp = top;
-    printf("poppppppp\n");
+    //printf("poppppppp\n");
     if (isEmpty())
     {
         fprintf(stderr, "A pilha encontra-se vazia.\n");
         return;
     }
-    top = top->link;
-    procurarMancha(temp->ptr, temp->indice, temp->cor, temp->matrix);
-    free(temp);
-    temp = NULL;
+    while (!isEmpty()) {
+        struct pilha_node *temp = top;
+        top = top->link;
+
+        // Call procurarMancha to process the node and its neighbors
+        procurarMancha(temp->ptr, temp->indice, temp->cor, temp->matrix);
+
+        // Free the temp node
+        free(temp);
+        temp = NULL;
+    }
     return;
 }
 
@@ -52,6 +56,4 @@ int isEmpty()
         return 0;
 }
 
-/*O que eu estava a pensar era fazer uma pilha que guarde os apontadores para os elementos da matriz, assim nao temos de estar a percorrer a matriz toda sempre que queremos remover
-os elementos, basta ir à pilha e aceder ao top e depois dar pop e assim sucessivamente
-AINDA NAO FOI TESTADO*/
+

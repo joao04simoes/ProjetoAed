@@ -21,7 +21,8 @@ typedef struct matriz
     int cordX;    // cordenada x do ponto que nos é dado
     int cordY;    // coordenada y do ponto que nos é dado
     int variante; // variante que nos é pedida
-
+    int t_mancha; //nº de blocos da mancha
+    int pont;
 } Matriz;
 
 extern struct pilha_node *top;
@@ -35,15 +36,19 @@ struct pilha_node
     struct pilha_node *link;
 };
 
-Matriz *read_file(const char *filename);
+Matriz *read_file(const char *filename,FILE *fp, char *firstLine);
 void procura_cima(Node *aux, Matriz *matrix);
 void procura_baixo(Node *aux, Matriz *matrix);
 void procura_direita(Node *aux, Matriz *matrix);
 void procura_esquerda(Node *aux, Matriz *matrix);
 Matriz *variante1(Matriz *matrix);
-Matriz *procurarMancha(Node *ptr, int indice, int cor, Matriz *matrix);
+int procurarMancha(Node *ptr, int indice, int cor, Matriz *matrix);
+Matriz *GravidadeHorizontal(Matriz *matrix);
+Matriz *GravidadeVertical(Matriz *matrix);
 void push(Node *ptr, int indice, int cor, Matriz *matrix);
 void pop();
 int isEmpty();
+FILE *output(const char *filename);
+void escreverFicheiro(Matriz *matrix, FILE *f);
 
 #endif
