@@ -12,6 +12,8 @@ Matriz *GravidadeVertical(Matriz *matrix) // começar a ler por baixo e escreve 
         while (!isEmpty())
             pop();
     aux = matrix->head;
+    if (matrix->rows == 1)
+        return matrix;
     while (aux != NULL)
     {
         for (int i = matrix->rows - 1; i > 0; i--)
@@ -37,15 +39,19 @@ Matriz *GravidadeHorizontal(Matriz *matrix)
 {
     Node *aux, *auxT, *coluna = matrix->head;
     int cor = 0;
+    if (matrix->head->next == NULL)
+        return matrix;
     while (coluna != NULL)
     {
         cor = 0;
         for (int i = 0; i < matrix->rows; i++)
         {
             if (coluna->data[i] != -1)
+            {
                 cor = 1;
+            }
         }
-        if (cor == 0 && coluna->next == NULL)
+        if (cor == 0 && coluna->next == NULL && coluna != matrix->head)
         {
             aux = coluna;
             coluna = NULL;
@@ -70,8 +76,8 @@ Matriz *GravidadeHorizontal(Matriz *matrix)
             continue;
         }
 
-        auxT = coluna;
-        coluna = auxT->next;
+        auxT = coluna->next;
+        coluna = auxT;
     }
     return matrix;
 }

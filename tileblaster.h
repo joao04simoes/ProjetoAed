@@ -52,5 +52,6 @@ int isEmpty();
 FILE *output(const char *filename);
 void escreverFicheiro(Matriz *matrix, FILE *f);
 void freeMatriz(Matriz *matrix);
+void escreveMatriz(Matriz *matrix, Node **coluna, int *indice, int cor);
 
 #endif

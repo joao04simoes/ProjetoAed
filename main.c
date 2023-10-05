@@ -8,7 +8,6 @@ int main(int argc, char *argv[])
 	Matriz *matrix;
 	FILE *fp, *fs;
 	char firstLine[100];
-	Node *aux, *auxT;
 	if (argc != 2)
 	{
 		return 0;
@@ -25,17 +24,6 @@ int main(int argc, char *argv[])
 	{
 
 		matrix = read_file(filename, fp, firstLine); // chamar a função de leitura do ficheiro
-		for (int i = 0; i < matrix->rows; i++)
-		{
-			aux = matrix->head;
-			while (aux != NULL)
-			{
-				printf("%d ", aux->data[i]); // a tabela esta a aprecer invertida primeira linha é a coluna
-				auxT = aux->next;
-				aux = auxT;
-			}
-			printf("\n");
-		}
 
 		if (matrix->variante == 1)
 		{
@@ -48,6 +36,7 @@ int main(int argc, char *argv[])
 			matrix = GravidadeVertical(matrix);
 			matrix = GravidadeHorizontal(matrix);
 		}
+
 		escreverFicheiro(matrix, fs);
 
 		freeMatriz(matrix);

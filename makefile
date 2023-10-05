@@ -8,5 +8,3 @@ all:
 clean:  
 	rm $(TARGET)
 
-
-
