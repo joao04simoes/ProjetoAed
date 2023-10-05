@@ -12,7 +12,7 @@ void push(Node *ptr, int indice, int cor, Matriz *matrix)
 
     if (new_p == NULL)
     {
-        fprintf(stderr, "Memory allocation failed for stack.\n");
+
         return; // Exit with an error code
     }
 
@@ -23,18 +23,17 @@ void push(Node *ptr, int indice, int cor, Matriz *matrix)
     new_p->link = NULL;
     new_p->link = top;
     top = new_p;
-    //printf("push \n");
 }
 
 void pop()
 {
-    //printf("poppppppp\n");
+
     if (isEmpty())
     {
-        fprintf(stderr, "A pilha encontra-se vazia.\n");
         return;
     }
-    while (!isEmpty()) {
+    while (!isEmpty())
+    {
         struct pilha_node *temp = top;
         top = top->link;
 
@@ -55,5 +54,3 @@ int isEmpty()
     else
         return 0;
 }
-
-
