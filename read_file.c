@@ -3,20 +3,20 @@
 #include <string.h>
 #include "tileblaster.h"
 
+// faz leitura do ficheiro de entrada
 Matriz *read_file(const char *filename, FILE *fp, char *firstLine)
 {
 
 	Matriz *matrix = (Matriz *)malloc(sizeof(Matriz));
 
-	// Buffer to read lines from the file
+	char buffer[5000]; // Buffer to read lines from the file
 
-	sscanf(firstLine, "%d %d %d %d %d", &matrix->rows, &matrix->colu, &matrix->variante, &matrix->cordX, &matrix->cordY);
+	sscanf(firstLine, "%d %d %d %d %d", &matrix->rows, &matrix->colu, &matrix->variante, &matrix->cordX, &matrix->cordY); // guarda o cabeçalho na estrutura da matriz
 	matrix->head = NULL;
 	matrix->t_mancha = 0;
 	matrix->pont = 0;
 	matrix->location = 0;
 	int indicolu = 1;
-	char buffer[5000];
 
 	for (int i = 0; i < matrix->colu; i++)
 	{
@@ -24,11 +24,10 @@ Matriz *read_file(const char *filename, FILE *fp, char *firstLine)
 		Node *newNode = (Node *)malloc(sizeof(Node));
 		if (newNode == NULL)
 		{
-
 			exit(0);
 		}
 
-		// Allocate memory for the columns of the new row
+		// aloca memoria para o vetor de inteiros
 		newNode->data = (int *)malloc(sizeof(int) * matrix->rows);
 		if (!newNode->data)
 		{
@@ -38,7 +37,7 @@ Matriz *read_file(const char *filename, FILE *fp, char *firstLine)
 		newNode->prev = NULL;
 		newNode->indice = indicolu;
 		indicolu++;
-		// int i = 0;
+		// coloca o novo no nalista
 		if (matrix->head == NULL)
 		{
 			matrix->head = newNode;
@@ -60,7 +59,7 @@ Matriz *read_file(const char *filename, FILE *fp, char *firstLine)
 	int elementos = matrix->rows * matrix->colu;
 	Node *coluna = matrix->head;
 	int lidos = 0;
-	while (fgets(buffer, sizeof(buffer), fp) != NULL && lidos != elementos)
+	while (fgets(buffer, sizeof(buffer), fp) != NULL && lidos != elementos) // le uma linha e guarda os valores na matriz
 	{
 
 		char *token = strtok(buffer, " ");
@@ -79,11 +78,13 @@ Matriz *read_file(const char *filename, FILE *fp, char *firstLine)
 	}
 	return matrix;
 }
+
+// escreve na matriz a cor do azulejo
 void escreveMatriz(Matriz *matrix, Node **coluna, int *indice, int cor)
 {
-	(*coluna)->data[*indice] = cor;
+	(*coluna)->data[*indice] = cor; // guarda a cor na matriz
 	*coluna = (*coluna)->next;
-	if (*coluna == NULL)
+	if (*coluna == NULL) // se tiver na ultima coluna volta ao inicio e incrementa o indice do vetor para a proxima linha
 	{
 		*coluna = matrix->head;
 		(*indice)++;

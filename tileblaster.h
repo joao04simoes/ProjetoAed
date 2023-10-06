@@ -22,19 +22,19 @@ typedef struct matriz
     int cordY;    // coordenada y do ponto que nos é dado
     int variante; // variante que nos é pedida
     int t_mancha; // nº de blocos da mancha
-    int pont;
-    int location;
+    int pont;     // pontuação da mancha
+    int location; // flag da coordenada
 } Matriz;
 
 extern struct pilha_node *top;
 
-struct pilha_node
+struct pilha_node // estrura de cada elemnto da pilha
 {
-    struct Node *ptr;
-    int indice;
-    int cor;
-    Matriz *matrix;
-    struct pilha_node *link;
+    struct Node *ptr;        // ponteiro para uma coluna
+    int indice;              // indice do vetor da coluna
+    int cor;                 // cor a procurar
+    Matriz *matrix;          // ponteiro para a matriz
+    struct pilha_node *link; // ponteiro para o proximo elemnto da pilha
 };
 
 Matriz *read_file(const char *filename, FILE *fp, char *firstLine);

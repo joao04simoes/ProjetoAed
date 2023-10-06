@@ -4,7 +4,7 @@
 #include "tileblaster.h"
 
 struct pilha_node *top = NULL;
-// vai criando os elementos da pilha de forma a que o ultimo a entrar fique no topo, assim é mais facil de remover, passa a ser O(1)
+// poe os elentos na pilha
 void push(Node *ptr, int indice, int cor, Matriz *matrix)
 {
 
@@ -13,7 +13,7 @@ void push(Node *ptr, int indice, int cor, Matriz *matrix)
     if (new_p == NULL)
     {
 
-        return; // Exit with an error code
+        return; // Exit
     }
 
     new_p->ptr = ptr;
@@ -25,10 +25,11 @@ void push(Node *ptr, int indice, int cor, Matriz *matrix)
     top = new_p;
 }
 
+// retira o elemnto da oilha e faz chamada da função de procurar a mancha
 void pop()
 {
 
-    if (isEmpty())
+    if (isEmpty()) // chama a funçao de verificar se a pilha esta vazia
     {
         return;
     }
@@ -37,16 +38,17 @@ void pop()
         struct pilha_node *temp = top;
         top = top->link;
 
-        // Call procurarMancha to process the node and its neighbors
+        // chama a funçao procurarMancha to process the node and its neighbors
         procurarMancha(temp->ptr, temp->indice, temp->cor, temp->matrix);
 
-        // Free the temp node
+        // liberta the temp node
         free(temp);
         temp = NULL;
     }
     return;
 }
 
+// verifica se a pilha esta vazia se tiver retorna 1 se não estiver vazia retorna 0
 int isEmpty()
 {
     if (top == NULL)

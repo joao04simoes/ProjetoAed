@@ -1,8 +1,23 @@
+/******************************************************************************
+ * (c) 2023-2024
+ * João Simões 106070
+ * Tiago Gonçalves 106021
+ *
+ * Last modified: out 2023-10-06
+ *
+ * NAME
+ *   main.c
+ *
+ * DESCRIPTION
+ *   Main program for tileblaster AED project
+ *
+ ******************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "tileblaster.h"
 
+// função main do programa
 int main(int argc, char *argv[])
 {
 	Matriz *matrix;
@@ -28,18 +43,18 @@ int main(int argc, char *argv[])
 		if (matrix->variante == 1)
 		{
 			matrix = variante1(matrix);
-			while (!isEmpty())
+			while (!isEmpty()) // da pop da lista enquanto houver elementos para procurar
 				pop();
 		}
-		if (matrix->variante == 2)
+		if (matrix->variante == 2) // realiza ambas as gravidades
 		{
 			matrix = GravidadeVertical(matrix);
 			matrix = GravidadeHorizontal(matrix);
 		}
 
-		escreverFicheiro(matrix, fs);
+		escreverFicheiro(matrix, fs); // escreve no ficheiro o resultaod da matriz
 
-		freeMatriz(matrix);
+		freeMatriz(matrix); // função matriz
 	}
 	fclose(fp);
 	fclose(fs);
