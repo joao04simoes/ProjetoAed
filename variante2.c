@@ -1,16 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "tileblaster.h"
 // realiza a gravidade vertical da matriz e retorna a matriz
 Matriz *GravidadeVertical(Matriz *matrix) // começar a ler por baixo e escreve na lista apenas numeros validos quando chegar a cima vai para a proxima coluna
 {
     Node *aux, *auxt;
     int j = 0;
-    matrix = variante1(matrix); // procura mancha
-    if (matrix->location == 1)
-        while (!isEmpty())
-            pop();
+
     aux = matrix->head;
     if (matrix->rows == 1) // apenas uma linha não é necessario fazer gravidade
         return matrix;

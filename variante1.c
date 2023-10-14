@@ -1,61 +1,71 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "tileblaster.h"
 
 // função de encontrar as coordenadas e chama a função de procurar a mancha
 Matriz *variante1(Matriz *matrix)
 {
-    Node *aux = matrix->head, *auxT;
-    int indice = 0;
-    int cor = 0;
-    int flag;
+    Node *coluna = matrix->tail;
+    int indice = matrix->rows - 1;
+    int nColuna = matrix->colu;
+    int flag = 0;
+    matrix->pontSpot = 0;
 
-    if (1 <= matrix->cordX && matrix->cordX <= matrix->rows && 1 <= matrix->cordY && matrix->cordY <= matrix->colu) // verifica se as coordenadas estão fora
+    while (coluna != NULL && indice >= 0)
     {
-        while (aux != NULL)
+        flag = 0;
+
+        if (coluna->data[indice] != -1)
         {
-            if (aux->indice == matrix->cordY) // break quando encontrar as coordenadas
+            if ((flag = procurarMancha(coluna, indice, coluna->data[indice], matrix)) == 1) // verifica se existe mancha na coordenada
             {
-                break;
+
+                coluna->data[indice] = -1;
+                printf("flag 1\n");
+                matrix = createSpotList(matrix, indice, nColuna);
+                printf("create\n");
+                matrix = eliminateSpot(matrix);
+                printf(" %d %d\n", matrix->spotHead->cordX, matrix->spotHead->cordY);
+                print(matrix);
+                coluna = matrix->tail;
+                nColuna = matrix->colu;
+                indice = matrix->rows - 1;
+                continue;
             }
-            auxT = aux->next;
-            aux = auxT;
         }
-        matrix->location = 1;
+        if (indice > 0)
+        {
+            indice--;
+        }
+        else
+        {
+            if (coluna->prev == NULL)
+                return matrix;
+            else
+            {
+
+                coluna = coluna->prev;
+                nColuna--;
+                indice = matrix->rows - 1;
+            }
+        }
     }
-    else
-    {
-        matrix->location = 0;
-        return matrix;
-    }
-
-    indice = matrix->rows - matrix->cordX;
-
-    cor = aux->data[indice];
-
-    if (aux->data[indice] == -1) // se a cor da coordenada for -1 da return
-        return matrix;
-
-    if ((flag = procurarMancha(aux, indice, cor, matrix)) == 1) // verifica se existe mancha na coordenada
-    {
-        aux->data[indice] = -1;
-        matrix->t_mancha++;
-    }
-
     return matrix;
 }
 
 // verifica se existe mancha a volta da coordenada
 int procurarMancha(Node *ptr, int indice, int cor, Matriz *matrix)
 {
+
     int flag = 0;
 
     if (indice > 0 && cor == ptr->data[indice - 1]) // procura mancha no azulejo de cima
     {
 
         ptr->data[indice - 1] = -1;
-        matrix->t_mancha++;
+        matrix->pontSpot++;
         flag = 1;
         push(ptr, indice - 1, cor, matrix); // coloca na pilha a coordenada
     }
@@ -65,7 +75,7 @@ int procurarMancha(Node *ptr, int indice, int cor, Matriz *matrix)
     {
 
         ptr->data[indice + 1] = -1;
-        matrix->t_mancha++;
+        matrix->pontSpot++;
         flag = 1;
         push(ptr, indice + 1, cor, matrix); // coloca na pilha a coordenada
     }
@@ -74,7 +84,7 @@ int procurarMancha(Node *ptr, int indice, int cor, Matriz *matrix)
     {
 
         ptr->prev->data[indice] = -1;
-        matrix->t_mancha++;
+        matrix->pontSpot++;
         flag = 1;
         push(ptr->prev, indice, cor, matrix); // coloca na pilha a coordenada
     }
@@ -83,10 +93,67 @@ int procurarMancha(Node *ptr, int indice, int cor, Matriz *matrix)
     {
 
         ptr->next->data[indice] = -1;
-        matrix->t_mancha++;
+        matrix->pontSpot++;
         flag = 1;
         push(ptr->next, indice, cor, matrix); // coloca na pilha a coordenada
     }
 
     return flag;
+}
+
+// criar função que cria um novo na lista de manchas e coloca como head
+Matriz *createSpotList(Matriz *matrix, int cordX, int cordY)
+{
+    spot *newSpot = (spot *)malloc(sizeof(spot));
+    printf("malloc\n");
+    if (matrix->spotTail == NULL)
+    {
+        printf("primeiro\n");
+        matrix->spotTail = newSpot;
+        matrix->spotHead = newSpot;
+        matrix->spotTail->prev = NULL;
+        matrix->spotHead->cordX = matrix->rows - cordX;
+        matrix->spotHead->cordY = cordY;
+        matrix->pontSpot++;
+        return matrix;
+    }
+    printf("generico\n");
+    matrix->spotHead->prev = newSpot;
+    matrix->spotHead = newSpot;
+    matrix->spotHead->cordX = matrix->rows - cordX;
+    matrix->spotHead->cordY = cordY;
+    matrix->pontSpot++;
+    return matrix;
+}
+
+Matriz *eliminateSpot(Matriz *matrix)
+{
+    printf("eliminate\n");
+    while (!isEmpty())
+    { // da pop da lista enquanto houver elementos para procurar
+        printf("pop\n");
+        pop();
+    }
+    matrix = GravidadeVertical(matrix);
+    matrix = GravidadeHorizontal(matrix);
+    // matrix->spotHead->value = matrix->pontSpot;
+    // matrix->pontSpot = 0;
+    return matrix;
+}
+
+void print(Matriz *matrix)
+{
+    Node *aux, *auxT;
+
+    for (int i = 0; i < matrix->rows; i++)
+    {
+        aux = matrix->head;
+        while (aux != NULL)
+        {
+            printf("%d ", aux->data[i]);
+            auxT = aux->next;
+            aux = auxT;
+        }
+        printf("\n");
+    }
 }

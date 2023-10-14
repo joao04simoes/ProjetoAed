@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "tileblaster.h"
 
 // funçao free da matriz
@@ -14,6 +15,6 @@ void freeMatriz(Matriz *matrix)
         free(matrix->head); // free do no da lista
         matrix->head = aux;
     }
-    free(matrix); // free da matriz
+    free(matrix); // free da matriz ola
     return;
 }

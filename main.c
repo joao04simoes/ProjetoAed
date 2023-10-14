@@ -16,10 +16,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include "tileblaster.h"
+#include <time.h>
 
 // função main do programa
 int main(int argc, char *argv[])
 {
+
+	clock_t start, end;
+	double execution_time;
+	start = clock();
 	Matriz *matrix;
 	FILE *fp, *fs;
 	char firstLine[100];
@@ -29,11 +34,14 @@ int main(int argc, char *argv[])
 	}
 
 	const char *filename = argv[1]; // guarda o nome do ficheiro
+	printf("%s\n", filename);
 	fp = fopen(filename, "r");
 	if (fp == NULL)
 	{
+
 		exit(0);
 	}
+
 	fs = output(filename);
 	while (fgets(firstLine, sizeof(firstLine), fp) != NULL)
 	{
@@ -43,8 +51,6 @@ int main(int argc, char *argv[])
 		if (matrix->variante == 1)
 		{
 			matrix = variante1(matrix);
-			while (!isEmpty()) // da pop da lista enquanto houver elementos para procurar
-				pop();
 		}
 		if (matrix->variante == 2) // realiza ambas as gravidades
 		{
@@ -58,6 +64,9 @@ int main(int argc, char *argv[])
 	}
 	fclose(fp);
 	fclose(fs);
+	end = clock();
+	execution_time = ((double)(end - start)) / CLOCKS_PER_SEC;
+	printf("%f\n", execution_time);
 
 	return 0;
 }

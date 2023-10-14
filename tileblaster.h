@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 typedef struct Node
 {
     int *data;  // Ponteiro para a coluna
@@ -13,17 +14,29 @@ typedef struct Node
     struct Node *prev; // Ponteiro para a coluna anterior
 } Node;
 
+typedef struct spot
+{
+    int cordX;
+    int cordY;
+    int value;
+    // struct spot *next;
+    struct spot *prev;
+
+} spot;
+
 typedef struct matriz
 {
-    Node *head;   // Ponteiro para o inicio da listta
+    Node *head; // Ponteiro para o inicio da listta
+    Node *tail;
+    spot *spotHead;
+    spot *spotTail;
     int rows;     // Numero de linhas
     int colu;     // Numero de colunas
-    int cordX;    // cordenada x do ponto que nos é dado
-    int cordY;    // coordenada y do ponto que nos é dado
     int variante; // variante que nos é pedida
-    int t_mancha; // nº de blocos da mancha
-    int pont;     // pontuação da mancha
+    int pontSpot;
+    int pont;     // pontuação da matriz
     int location; // flag da coordenada
+    bool done;
 } Matriz;
 
 extern struct pilha_node *top;
@@ -53,5 +66,7 @@ FILE *output(const char *filename);
 void escreverFicheiro(Matriz *matrix, FILE *f);
 void freeMatriz(Matriz *matrix);
 void escreveMatriz(Matriz *matrix, Node **coluna, int *indice, int cor);
-
+Matriz *eliminateSpot(Matriz *matrix);
+Matriz *createSpotList(Matriz *matrix, int cordX, int cordY);
+void print(Matriz *matrix);
 #endif

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "tileblaster.h"
 
 // faz leitura do ficheiro de entrada
@@ -11,11 +12,12 @@ Matriz *read_file(const char *filename, FILE *fp, char *firstLine)
 
 	char buffer[5000]; // Buffer to read lines from the file
 
-	sscanf(firstLine, "%d %d %d %d %d", &matrix->rows, &matrix->colu, &matrix->variante, &matrix->cordX, &matrix->cordY); // guarda o cabeçalho na estrutura da matriz
+	sscanf(firstLine, "%d %d %d", &matrix->rows, &matrix->colu, &matrix->variante); // guarda o cabeçalho na estrutura da matriz
 	matrix->head = NULL;
-	matrix->t_mancha = 0;
+	matrix->pontSpot = 0;
 	matrix->pont = 0;
 	matrix->location = 0;
+	matrix->spotTail = NULL;
 	int indicolu = 1;
 
 	for (int i = 0; i < matrix->colu; i++)
@@ -51,6 +53,7 @@ Matriz *read_file(const char *filename, FILE *fp, char *firstLine)
 			auxT = aux;
 			aux = auxT->next;
 		}
+		matrix->tail = newNode;
 		auxT->next = newNode;
 		newNode->prev = auxT;
 	}
