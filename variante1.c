@@ -23,11 +23,11 @@ Matriz *variante1(Matriz *matrix)
             {
 
                 coluna->data[indice] = -1;
-                printf("flag 1\n");
                 matrix = createSpotList(matrix, indice, nColuna);
-                printf("create\n");
                 matrix = eliminateSpot(matrix);
                 printf(" %d %d\n", matrix->spotHead->cordX, matrix->spotHead->cordY);
+                printf("%d\n", matrix->spotHead->value);
+                printf("%d\n", matrix->spotHead->value = matrix->spotHead->value * (matrix->spotHead->value - 1));
                 print(matrix);
                 coluna = matrix->tail;
                 nColuna = matrix->colu;
@@ -136,8 +136,8 @@ Matriz *eliminateSpot(Matriz *matrix)
     }
     matrix = GravidadeVertical(matrix);
     matrix = GravidadeHorizontal(matrix);
-    // matrix->spotHead->value = matrix->pontSpot;
-    // matrix->pontSpot = 0;
+    matrix->spotHead->value = matrix->pontSpot;
+    matrix->pontSpot = 0;
     return matrix;
 }
 
