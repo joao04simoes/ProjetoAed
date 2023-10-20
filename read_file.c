@@ -14,50 +14,15 @@ Matriz *read_file(const char *filename, FILE *fp, char *firstLine)
 
 	sscanf(firstLine, "%d %d %d", &matrix->rows, &matrix->colu, &matrix->variante); // guarda o cabeçalho na estrutura da matriz
 	matrix->head = NULL;
+	matrix->tail = NULL;
 	matrix->pontSpot = 0;
 	matrix->pont = 0;
 	matrix->location = 0;
 	matrix->spotTail = NULL;
-	int indicolu = 1;
+	matrix->spotHead = NULL;
+	matrix->done = false;
 
-	for (int i = 0; i < matrix->colu; i++)
-	{
-
-		Node *newNode = (Node *)malloc(sizeof(Node));
-		if (newNode == NULL)
-		{
-			exit(0);
-		}
-
-		// aloca memoria para o vetor de inteiros
-		newNode->data = (int *)malloc(sizeof(int) * matrix->rows);
-		if (!newNode->data)
-		{
-			exit(0);
-		}
-		newNode->next = NULL;
-		newNode->prev = NULL;
-		newNode->indice = indicolu;
-		indicolu++;
-		// coloca o novo no nalista
-		if (matrix->head == NULL)
-		{
-			matrix->head = newNode;
-			newNode->next = NULL;
-			newNode->prev = NULL;
-			continue;
-		}
-		Node *aux = matrix->head, *auxT = NULL;
-		while (aux != NULL)
-		{
-			auxT = aux;
-			aux = auxT->next;
-		}
-		matrix->tail = newNode;
-		auxT->next = newNode;
-		newNode->prev = auxT;
-	}
-
+	matrix = initMatrix(matrix);
 	int indice = 0;
 	int elementos = matrix->rows * matrix->colu;
 	Node *coluna = matrix->head;
@@ -78,6 +43,49 @@ Matriz *read_file(const char *filename, FILE *fp, char *firstLine)
 			escreveMatriz(matrix, &coluna, &indice, atoi(token));
 			token = strtok(NULL, " ");
 		}
+	}
+	return matrix;
+}
+
+Matriz *initMatrix(Matriz *matrix)
+{
+	for (int i = 0; i < matrix->colu; i++)
+	{
+
+		Node *newNode = (Node *)malloc(sizeof(Node));
+		if (newNode == NULL)
+		{
+			exit(0);
+		}
+
+		// aloca memoria para o vetor de inteiros
+		newNode->data = (int *)malloc(sizeof(int) * matrix->rows);
+		if (!newNode->data)
+		{
+			exit(0);
+		}
+		newNode->next = NULL;
+		newNode->prev = NULL;
+		// newNode->indice = indicolu;
+		// indicolu++;
+
+		// coloca o novo no nalista
+		if (matrix->head == NULL)
+		{
+			matrix->head = newNode;
+			matrix->tail = newNode;
+			newNode->next = NULL;
+			newNode->prev = NULL;
+			continue;
+		}
+		Node *auxT = NULL;
+
+		auxT = matrix->tail;
+		matrix->tail = newNode;
+		auxT->next = newNode;
+		newNode->prev = auxT;
+
+		// reverrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
 	}
 	return matrix;
 }

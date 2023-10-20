@@ -19,12 +19,14 @@ Matriz *variante1(Matriz *matrix)
 
         if (coluna->data[indice] != -1)
         {
-            if ((flag = procurarMancha(coluna, indice, coluna->data[indice], matrix)) == 1) // verifica se existe mancha na coordenada
+            if ((flag = procurarMancha(coluna, coluna, indice, coluna->data[indice], matrix)) == 1) // verifica se existe mancha na coordenada
             {
 
                 coluna->data[indice] = -1;
                 matrix = createSpotList(matrix, indice, nColuna);
                 matrix = eliminateSpot(matrix);
+                matrix = GravidadeVertical(matrix);
+                matrix = GravidadeHorizontal(matrix);
                 printf(" %d %d\n", matrix->spotHead->cordX, matrix->spotHead->cordY);
                 printf("%d\n", matrix->spotHead->value);
                 printf("%d\n", matrix->spotHead->value = matrix->spotHead->value * (matrix->spotHead->value - 1));
@@ -56,46 +58,53 @@ Matriz *variante1(Matriz *matrix)
 }
 
 // verifica se existe mancha a volta da coordenada
-int procurarMancha(Node *ptr, int indice, int cor, Matriz *matrix)
+int procurarMancha(Node *ptr, Node *ptrVer, int indice, int cor, Matriz *matrix)
 {
 
     int flag = 0;
-
-    if (indice > 0 && cor == ptr->data[indice - 1]) // procura mancha no azulejo de cima
+    printf("olaaa\n");
+    if (indice > 0 && cor == ptrVer->data[indice - 1]) // procura mancha no azulejo de cima
     {
 
         ptr->data[indice - 1] = -1;
+        ptrVer->data[indice - 1] = -1;
         matrix->pontSpot++;
         flag = 1;
-        push(ptr, indice - 1, cor, matrix); // coloca na pilha a coordenada
+        push(ptr, ptrVer, indice - 1, cor, matrix); // coloca na pilha a coordenada
     }
-
-    if (indice < matrix->rows - 1 && cor == ptr->data[indice + 1]) // procura mancha no azulejo baixo
-
+    printf("merdaaaaaaa\n");
+    // printf("%d\n", ptrVer->data[1]);
+    printf(" %d cior    %d\n", indice, cor);
+    if (indice < matrix->rows - 1 && cor == ptrVer->data[indice + 1]) // procura mancha no azulejo baixo
     {
-
+        printf("entrou\n");
         ptr->data[indice + 1] = -1;
+        ptrVer->data[indice + 1] = -1;
         matrix->pontSpot++;
         flag = 1;
-        push(ptr, indice + 1, cor, matrix); // coloca na pilha a coordenada
+        push(ptr, ptrVer, indice + 1, cor, matrix); // coloca na pilha a coordenada
     }
+    printf("fdssssssssss\n");
 
-    if (ptr != matrix->head && cor == ptr->prev->data[indice]) // procura mancha no azulejo do lado esquerdo
+    printf("ola\n");
+    if (ptrVer != matrix->head && cor == ptrVer->prev->data[indice]) // procura mancha no azulejo do lado esquerdo
     {
-
+        printf("aquiiiii\n");
         ptr->prev->data[indice] = -1;
+        ptrVer->prev->data[indice] = -1;
         matrix->pontSpot++;
         flag = 1;
-        push(ptr->prev, indice, cor, matrix); // coloca na pilha a coordenada
+        push(ptr->prev, ptrVer->prev, indice, cor, matrix); // coloca na pilha a coordenada
     }
-
-    if (ptr->next != NULL && cor == ptr->next->data[indice]) // procura mancha no azulejo do lado direito
+    printf("shitttttttt\n");
+    if (ptrVer->next != NULL && cor == ptrVer->next->data[indice]) // procura mancha no azulejo do lado direito
     {
 
         ptr->next->data[indice] = -1;
+        ptrVer->next->data[indice] = -1;
         matrix->pontSpot++;
         flag = 1;
-        push(ptr->next, indice, cor, matrix); // coloca na pilha a coordenada
+        push(ptr->next, ptrVer->next, indice, cor, matrix); // coloca na pilha a coordenada
     }
 
     return flag;
@@ -114,15 +123,16 @@ Matriz *createSpotList(Matriz *matrix, int cordX, int cordY)
         matrix->spotTail->prev = NULL;
         matrix->spotHead->cordX = matrix->rows - cordX;
         matrix->spotHead->cordY = cordY;
-        matrix->pontSpot++;
+        matrix->spotHead->next = NULL;
+        matrix->spotTail->next = NULL;
         return matrix;
     }
     printf("generico\n");
+    newSpot->next = matrix->spotHead;
     matrix->spotHead->prev = newSpot;
     matrix->spotHead = newSpot;
     matrix->spotHead->cordX = matrix->rows - cordX;
     matrix->spotHead->cordY = cordY;
-    matrix->pontSpot++;
     return matrix;
 }
 
@@ -134,9 +144,9 @@ Matriz *eliminateSpot(Matriz *matrix)
         printf("pop\n");
         pop();
     }
-    matrix = GravidadeVertical(matrix);
-    matrix = GravidadeHorizontal(matrix);
+
     matrix->spotHead->value = matrix->pontSpot;
+    matrix->pont = matrix->pont + (matrix->pontSpot * (matrix->pontSpot - 1));
     matrix->pontSpot = 0;
     return matrix;
 }

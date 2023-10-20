@@ -19,7 +19,7 @@ typedef struct spot
     int cordX;
     int cordY;
     int value;
-    // struct spot *next;
+    struct spot *next;
     struct spot *prev;
 
 } spot;
@@ -40,10 +40,12 @@ typedef struct matriz
 } Matriz;
 
 extern struct pilha_node *top;
+extern struct pilha_node *topDfs;
 
 struct pilha_node // estrura de cada elemnto da pilha
 {
-    struct Node *ptr;        // ponteiro para uma coluna
+    struct Node *ptr; // ponteiro para uma coluna
+    struct Node *ptrVer;
     int indice;              // indice do vetor da coluna
     int cor;                 // cor a procurar
     Matriz *matrix;          // ponteiro para a matriz
@@ -51,15 +53,12 @@ struct pilha_node // estrura de cada elemnto da pilha
 };
 
 Matriz *read_file(const char *filename, FILE *fp, char *firstLine);
-void procura_cima(Node *aux, Matriz *matrix);
-void procura_baixo(Node *aux, Matriz *matrix);
-void procura_direita(Node *aux, Matriz *matrix);
-void procura_esquerda(Node *aux, Matriz *matrix);
+
 Matriz *variante1(Matriz *matrix);
-int procurarMancha(Node *ptr, int indice, int cor, Matriz *matrix);
+int procurarMancha(Node *ptr, Node *ptrVer, int indice, int cor, Matriz *matrix);
 Matriz *GravidadeHorizontal(Matriz *matrix);
 Matriz *GravidadeVertical(Matriz *matrix);
-void push(Node *ptr, int indice, int cor, Matriz *matrix);
+void push(Node *ptr, Node *ptrVer, int indice, int cor, Matriz *matrix);
 void pop();
 int isEmpty();
 FILE *output(const char *filename);
@@ -69,4 +68,12 @@ void escreveMatriz(Matriz *matrix, Node **coluna, int *indice, int cor);
 Matriz *eliminateSpot(Matriz *matrix);
 Matriz *createSpotList(Matriz *matrix, int cordX, int cordY);
 void print(Matriz *matrix);
+
+Matriz *initMatrix(Matriz *matrix);
+Matriz *dfs(Matriz *matrix);
+Matriz *copyMatrix(Matriz *matrix);
+void push_dfs(Matriz *matrix);
+Matriz *pop_dfs();
+int isEmpty_dfs();
+
 #endif

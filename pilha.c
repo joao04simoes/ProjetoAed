@@ -6,7 +6,7 @@
 
 struct pilha_node *top = NULL;
 // poe os elentos na pilha
-void push(Node *ptr, int indice, int cor, Matriz *matrix)
+void push(Node *ptr, Node *ptrVer, int indice, int cor, Matriz *matrix)
 {
 
     struct pilha_node *new_p = (struct pilha_node *)malloc(sizeof(struct pilha_node));
@@ -18,6 +18,7 @@ void push(Node *ptr, int indice, int cor, Matriz *matrix)
     }
 
     new_p->ptr = ptr;
+    new_p->ptrVer = ptrVer;
     new_p->indice = indice;
     new_p->cor = cor;
     new_p->matrix = matrix;
@@ -40,7 +41,7 @@ void pop()
         top = top->link;
 
         // chama a funçao procurarMancha to process the node and its neighbors
-        procurarMancha(temp->ptr, temp->indice, temp->cor, temp->matrix);
+        procurarMancha(temp->ptr, temp->ptrVer, temp->indice, temp->cor, temp->matrix);
 
         // liberta the temp node
         free(temp);

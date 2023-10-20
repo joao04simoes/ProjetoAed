@@ -54,8 +54,11 @@ int main(int argc, char *argv[])
 		}
 		if (matrix->variante == 2) // realiza ambas as gravidades
 		{
-			matrix = GravidadeVertical(matrix);
-			matrix = GravidadeHorizontal(matrix);
+			matrix = dfs(matrix);
+			if (matrix->done == true)
+			{
+				matrix = variante1(matrix);
+			}
 		}
 
 		escreverFicheiro(matrix, fs); // escreve no ficheiro o resultaod da matriz
