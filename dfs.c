@@ -37,18 +37,26 @@ Matriz *dfs(Matriz *matrix)
                 if (matrix->pont > matrix->variante)
                 {
                     matrix->done = true;
+                    while(!isEmpty_dfs()){
+                        matrixVer = pop_dfs();
+                        freeMatriz(matrixVer);
+                    }
                     return matrix;
                 }
                 break;
             }
             else
             {
+                if(isEmpty_dfs()){
+                    return newMatrix;
+                }
                 free(newMatrix);
                 // ver se a pilha esta vazia
                 matrixVer = pop_dfs();
                 newMatrix = pop_dfs();
                 spot = newMatrix->spotHead;
                 newMatrix->spotHead = newMatrix->spotHead->next;
+                matrix->n_plays--;
                 free(spot);
                 coluna = newMatrix->tail;
                 colunaVer = matrixVer->tail;
@@ -67,12 +75,20 @@ Matriz *copyMatrix(Matriz *matrix)
 
     Node *aux, *newaux;
     Matriz *newMatrix = (Matriz *)malloc(sizeof(Matriz));
-    newMatrix = initMatrix(newMatrix);
+    
     newMatrix->rows = matrix->rows;
     newMatrix->colu = matrix->colu;
     newMatrix->pont = matrix->pont;
     newMatrix->spotHead = matrix->spotHead;
     newMatrix->spotTail = matrix->spotTail;
+    newMatrix->n_plays = matrix->n_plays;
+    newMatrix->head = NULL;
+    newMatrix->tail = NULL;
+    newMatrix->variante = matrix->variante;
+    newMatrix->pontSpot = 0;
+    newMatrix->done = false;
+
+    newMatrix = initMatrix(newMatrix);
 
     aux = matrix->head;
     newaux = newMatrix->head;

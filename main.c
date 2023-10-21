@@ -48,11 +48,11 @@ int main(int argc, char *argv[])
 
 		matrix = read_file(filename, fp, firstLine); // chamar a função de leitura do ficheiro
 
-		if (matrix->variante == 1)
+		if (matrix->variante == -1)
 		{
 			matrix = variante1(matrix);
 		}
-		if (matrix->variante == 2) // realiza ambas as gravidades
+		if (matrix->variante >= 0) // realiza ambas as gravidades
 		{
 			matrix = dfs(matrix);
 			if (matrix->done == true)
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 		}
 
 		escreverFicheiro(matrix, fs); // escreve no ficheiro o resultaod da matriz
-
+		free_spotlist(matrix);
 		freeMatriz(matrix); // função matriz
 	}
 	fclose(fp);

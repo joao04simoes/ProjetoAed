@@ -43,31 +43,20 @@ FILE *output(const char *filename)
 // escreve no ficheiro de saida os resultados das matrizes
 void escreverFicheiro(Matriz *matrix, FILE *f)
 {
-  Node *aux = matrix->head, *auxT;
+  spot *aux = matrix->spotTail;
+
   fprintf(f, "%d %d %d \n", matrix->rows, matrix->colu, matrix->variante); // da print do cabeçalho
-  if (matrix->variante == 1)                                               // se for variante 2 percorre a matriz toda e escreve no ficheiro a matriz
+  if (matrix->variante == -1)                                               // se for variante 2 percorre a matriz toda e escreve no ficheiro a matriz
   {
-    for (int i = 0; i < matrix->rows; i++)
-    {
-      aux = matrix->head;
-      while (aux != NULL)
-      {
-        fprintf(f, "%d ", aux->data[i]);
-        auxT = aux->next;
-        aux = auxT;
-      }
-      fprintf(f, "\n");
+    fprintf(f, "%d %d \n", matrix->n_plays, matrix->pont);
+    while(aux != NULL) {
+      fprintf(f, "%d %d \n",aux->cordX, aux->cordY);
+      aux = aux->prev;
     }
     fprintf(f, "\n");
     return;
   }
-  /*if (matrix->variante == 1 && matrix->location == 1) // se for variante1 escreve no ficheiro o resultado da mancha
-  {
-    matrix->pont = matrix->t_mancha * (matrix->t_mancha - 1);
-    fprintf(f, "%d\n", matrix->pont);
-    fprintf(f, "\n");
-    return;
-  }*/
+
   fprintf(f, "\n");
   return;
 }

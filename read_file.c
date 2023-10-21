@@ -17,7 +17,7 @@ Matriz *read_file(const char *filename, FILE *fp, char *firstLine)
 	matrix->tail = NULL;
 	matrix->pontSpot = 0;
 	matrix->pont = 0;
-	matrix->location = 0;
+	matrix->n_plays = 0;
 	matrix->spotTail = NULL;
 	matrix->spotHead = NULL;
 	matrix->done = false;

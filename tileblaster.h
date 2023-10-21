@@ -35,7 +35,7 @@ typedef struct matriz
     int variante; // variante que nos é pedida
     int pontSpot;
     int pont;     // pontuação da matriz
-    int location; // flag da coordenada
+    int n_plays; // numero de jogadas
     bool done;
 } Matriz;
 
@@ -58,12 +58,17 @@ Matriz *variante1(Matriz *matrix);
 int procurarMancha(Node *ptr, Node *ptrVer, int indice, int cor, Matriz *matrix);
 Matriz *GravidadeHorizontal(Matriz *matrix);
 Matriz *GravidadeVertical(Matriz *matrix);
+
 void push(Node *ptr, Node *ptrVer, int indice, int cor, Matriz *matrix);
 void pop();
 int isEmpty();
+
 FILE *output(const char *filename);
 void escreverFicheiro(Matriz *matrix, FILE *f);
+
 void freeMatriz(Matriz *matrix);
+void free_spotlist(Matriz *matrix);
+
 void escreveMatriz(Matriz *matrix, Node **coluna, int *indice, int cor);
 Matriz *eliminateSpot(Matriz *matrix);
 Matriz *createSpotList(Matriz *matrix, int cordX, int cordY);
@@ -72,6 +77,7 @@ void print(Matriz *matrix);
 Matriz *initMatrix(Matriz *matrix);
 Matriz *dfs(Matriz *matrix);
 Matriz *copyMatrix(Matriz *matrix);
+
 void push_dfs(Matriz *matrix);
 Matriz *pop_dfs();
 int isEmpty_dfs();

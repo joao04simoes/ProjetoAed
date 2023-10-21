@@ -125,6 +125,7 @@ Matriz *createSpotList(Matriz *matrix, int cordX, int cordY)
         matrix->spotHead->cordY = cordY;
         matrix->spotHead->next = NULL;
         matrix->spotTail->next = NULL;
+        matrix->n_plays++;
         return matrix;
     }
     printf("generico\n");
@@ -133,6 +134,7 @@ Matriz *createSpotList(Matriz *matrix, int cordX, int cordY)
     matrix->spotHead = newSpot;
     matrix->spotHead->cordX = matrix->rows - cordX;
     matrix->spotHead->cordY = cordY;
+    matrix->n_plays++;
     return matrix;
 }
 

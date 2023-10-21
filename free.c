@@ -18,3 +18,15 @@ void freeMatriz(Matriz *matrix)
     free(matrix); // free da matriz ola
     return;
 }
+
+void free_spotlist(Matriz *matrix){
+
+    spot *aux = matrix->spotHead;
+    while(matrix->spotHead != NULL)
+    {
+        aux = matrix->spotHead->next;
+        free(matrix->spotHead);
+        matrix->spotHead = aux;
+    }
+    return;
+}
