@@ -8,54 +8,76 @@ Matriz *dfs(Matriz *matrix)
 
 {
     Node *coluna = matrix->tail, *colunaVer;
-    Matriz *newMatrix = matrix, *matrixVer;
+    Matriz *newMatrix, *matrixVer;
     spot *spot;
     int flag, indicolu = matrix->colu;
     matrixVer = copyMatrix(matrix);
     colunaVer = matrixVer->tail;
+    push_dfs(matrix);
+    print(matrix);
+    newMatrix = copyMatrix(matrix);
+    coluna = newMatrix->tail;
     while (coluna != NULL)
     {
-        indicolu--;
+
         for (int indice = newMatrix->rows - 1; indice > -1; indice--)
         {
-            if ((flag = procurarMancha(coluna, colunaVer, indice, coluna->data[indice], newMatrix)) == 1 && coluna->data[indice] != -1)
+            printf("%d    %d\n ", indicolu, indice);
+            if (coluna->data[indice] != -1)
             {
-                push_dfs(newMatrix);
-                newMatrix = copyMatrix(newMatrix);
-                coluna->data[indice] = -1;
-                colunaVer->data[indice] = -1;
-                newMatrix = createSpotList(newMatrix, indice, indicolu);
-                newMatrix = eliminateSpot(matrix);
-                push_dfs(matrixVer);
-                newMatrix = GravidadeVertical(newMatrix);
-                newMatrix = GravidadeHorizontal(newMatrix);
-
-                matrixVer = copyMatrix(newMatrix);
-                coluna = newMatrix->tail;
-                colunaVer = matrixVer->tail;
-                indicolu = newMatrix->colu;
-                if (matrix->pont > matrix->variante)
+                if ((flag = procurarMancha(coluna, colunaVer, indice, coluna->data[indice], newMatrix)) == 1)
                 {
-                    matrix->done = true;
-                    while (!isEmpty_dfs())
+                    printf("tamos na colunnnnnnna %d\n", indicolu);
+                    coluna->data[indice] = -1;
+                    colunaVer->data[indice] = -1;
+                    newMatrix = createSpotList(newMatrix, indice, indicolu);
+                    newMatrix = eliminateSpot(newMatrix);
+                    printf("ver %d \n", newMatrix->pont);
+                    print(matrixVer);
+                    printf("new \n");
+                    push_dfs(matrixVer);
+                    newMatrix = GravidadeVertical(newMatrix);
+                    newMatrix = GravidadeHorizontal(newMatrix);
+                    print(newMatrix);
+                    push_dfs(newMatrix);
+                    newMatrix = copyMatrix(newMatrix);
+                    matrixVer = copyMatrix(newMatrix);
+                    coluna = newMatrix->tail;
+                    colunaVer = matrixVer->tail;
+                    indicolu = newMatrix->colu;
+                    if (newMatrix->pont > newMatrix->variante)
                     {
-                        matrixVer = pop_dfs();
+                        printf("pontuação\n");
+                        newMatrix->done = true;
                         freeMatriz(matrixVer);
+                        while (!isEmpty_dfs())
+                        {
+                            matrixVer = pop_dfs();
+                            printf("erro\n");
+                            freeMatriz(matrixVer);
+                            printf("depois do free\n");
+                        }
+                        return newMatrix;
                     }
-                    return matrix;
+                    continue;
                 }
-                break;
             }
-            if (indicolu == 0 && indice == 0)
+
+            if (indicolu == 1 && indice == 0)
             {
+                printf("nada\n");
                 if (isEmpty_dfs())
                 {
+
                     return newMatrix;
                 }
                 free(newMatrix);
+                free(matrixVer);
                 // ver se a pilha esta vazia
                 matrixVer = pop_dfs();
+                matrixVer = pop_dfs();
                 newMatrix = pop_dfs();
+                printf("popdfs\n");
                 spot = newMatrix->spotHead;
                 newMatrix->spotHead = newMatrix->spotHead->next;
                 matrix->n_plays--;
@@ -68,6 +90,7 @@ Matriz *dfs(Matriz *matrix)
         }
         coluna = coluna->prev;
         colunaVer = colunaVer->prev;
+        indicolu--;
     }
     return newMatrix;
 }

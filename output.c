@@ -46,11 +46,12 @@ void escreverFicheiro(Matriz *matrix, FILE *f)
   spot *aux = matrix->spotTail;
 
   fprintf(f, "%d %d %d \n", matrix->rows, matrix->colu, matrix->variante); // da print do cabeçalho
-  if (matrix->variante == -1)                                               // se for variante 2 percorre a matriz toda e escreve no ficheiro a matriz
+  if (matrix->variante == -1)                                              // se for variante 2 percorre a matriz toda e escreve no ficheiro a matriz
   {
     fprintf(f, "%d %d \n", matrix->n_plays, matrix->pont);
-    while(aux != NULL) {
-      fprintf(f, "%d %d \n",aux->cordX, aux->cordY);
+    for (int i = 0; i < matrix->n_plays; i++)
+    {
+      fprintf(f, "%d %d \n", aux->cordX, aux->cordY);
       aux = aux->prev;
     }
     fprintf(f, "\n");

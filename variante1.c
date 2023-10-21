@@ -20,11 +20,12 @@ Matriz *variante1(Matriz *matrix)
         // printf(" %d olaaaaaa e %d indi \n", nColuna, coluna->data[indice]);
         if (coluna->data[indice] != -1)
         {
-            printf("procurar\n");
+
             if ((flag = procurarMancha(coluna, coluna, indice, coluna->data[indice], matrix)) == 1) // verifica se existe mancha na coordenada
             {
 
                 coluna->data[indice] = -1;
+                matrix->pontSpot++;
                 matrix = createSpotList(matrix, indice, nColuna);
                 matrix = eliminateSpot(matrix);
                 matrix = GravidadeVertical(matrix);
@@ -119,10 +120,10 @@ int procurarMancha(Node *ptr, Node *ptrVer, int indice, int cor, Matriz *matrix)
 Matriz *createSpotList(Matriz *matrix, int cordX, int cordY)
 {
     spot *newSpot = (spot *)malloc(sizeof(spot));
-    printf("malloc\n");
+    // printf("malloc\n");
     if (matrix->spotTail == NULL)
     {
-        printf("primeiro\n");
+        // printf("primeiro\n");
         matrix->spotTail = newSpot;
         matrix->spotHead = newSpot;
         matrix->spotTail->prev = NULL;
@@ -133,7 +134,7 @@ Matriz *createSpotList(Matriz *matrix, int cordX, int cordY)
         matrix->n_plays++;
         return matrix;
     }
-    printf("generico\n");
+    // printf("generico\n");
     newSpot->next = matrix->spotHead;
     matrix->spotHead->prev = newSpot;
     matrix->spotHead = newSpot;
@@ -145,17 +146,17 @@ Matriz *createSpotList(Matriz *matrix, int cordX, int cordY)
 
 Matriz *eliminateSpot(Matriz *matrix)
 {
-    printf("eliminate\n");
+    // printf("eliminate\n");
     while (!isEmpty())
     { // da pop da lista enquanto houver elementos para procurar
-        printf("pop\n");
+
         pop();
     }
 
-    matrix->spotHead->value = matrix->pontSpot;
-    printf(" %d mancha e %d matrix\n", matrix->pontSpot, matrix->pont);
+    // printf("after pop\n");
+    // printf(" %d mancha e %d matrix\n", matrix->pontSpot, matrix->pont);
     matrix->pont = matrix->pont + (matrix->pontSpot * (matrix->pontSpot - 1));
-    printf("  %d matrix\n", matrix->pont);
+    // printf("  %d matrix\n", matrix->pont);
     matrix->pontSpot = 0;
     return matrix;
 }

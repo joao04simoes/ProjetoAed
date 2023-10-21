@@ -41,7 +41,7 @@ Matriz *GravidadeHorizontal(Matriz *matrix)
         return matrix;
     while (coluna != NULL) // gravidade horizontal verifica se o vetor inteiro é -1 se for passa o no para o inicio da lista de colunas
     {
-        printf("OLAAAAA\n");
+
         cor = 0;
         for (int i = 0; i < matrix->rows; i++) // verifica se há cor
         {
