@@ -18,7 +18,7 @@ Matriz *dfs(Matriz *matrix)
         indicolu--;
         for (int indice = newMatrix->rows - 1; indice > -1; indice--)
         {
-            if ((flag = procurarMancha(coluna, colunaVer, indice, coluna->data[indice], newMatrix)) == 1)
+            if ((flag = procurarMancha(coluna, colunaVer, indice, coluna->data[indice], newMatrix)) == 1 && coluna->data[indice] != -1)
             {
                 push_dfs(newMatrix);
                 newMatrix = copyMatrix(newMatrix);
@@ -37,7 +37,8 @@ Matriz *dfs(Matriz *matrix)
                 if (matrix->pont > matrix->variante)
                 {
                     matrix->done = true;
-                    while(!isEmpty_dfs()){
+                    while (!isEmpty_dfs())
+                    {
                         matrixVer = pop_dfs();
                         freeMatriz(matrixVer);
                     }
@@ -45,9 +46,10 @@ Matriz *dfs(Matriz *matrix)
                 }
                 break;
             }
-            else
+            if (indicolu == 0 && indice == 0)
             {
-                if(isEmpty_dfs()){
+                if (isEmpty_dfs())
+                {
                     return newMatrix;
                 }
                 free(newMatrix);
@@ -75,7 +77,7 @@ Matriz *copyMatrix(Matriz *matrix)
 
     Node *aux, *newaux;
     Matriz *newMatrix = (Matriz *)malloc(sizeof(Matriz));
-    
+
     newMatrix->rows = matrix->rows;
     newMatrix->colu = matrix->colu;
     newMatrix->pont = matrix->pont;

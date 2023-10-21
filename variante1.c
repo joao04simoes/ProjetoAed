@@ -16,9 +16,11 @@ Matriz *variante1(Matriz *matrix)
     while (coluna != NULL && indice >= 0)
     {
         flag = 0;
-
+        // printf("flggggggg\n");
+        // printf(" %d olaaaaaa e %d indi \n", nColuna, coluna->data[indice]);
         if (coluna->data[indice] != -1)
         {
+            printf("procurar\n");
             if ((flag = procurarMancha(coluna, coluna, indice, coluna->data[indice], matrix)) == 1) // verifica se existe mancha na coordenada
             {
 
@@ -27,10 +29,13 @@ Matriz *variante1(Matriz *matrix)
                 matrix = eliminateSpot(matrix);
                 matrix = GravidadeVertical(matrix);
                 matrix = GravidadeHorizontal(matrix);
-                printf(" %d %d\n", matrix->spotHead->cordX, matrix->spotHead->cordY);
+                /*printf(" %d %d\n", matrix->spotHead->cordX, matrix->spotHead->cordY);
                 printf("%d\n", matrix->spotHead->value);
                 printf("%d\n", matrix->spotHead->value = matrix->spotHead->value * (matrix->spotHead->value - 1));
                 print(matrix);
+                printf("\n");
+                print2(matrix);*/
+                printf("%d pontuaçao \n", matrix->pont);
                 coluna = matrix->tail;
                 nColuna = matrix->colu;
                 indice = matrix->rows - 1;
@@ -43,15 +48,15 @@ Matriz *variante1(Matriz *matrix)
         }
         else
         {
-            if (coluna->prev == NULL)
-                return matrix;
-            else
-            {
 
-                coluna = coluna->prev;
-                nColuna--;
-                indice = matrix->rows - 1;
+            if (nColuna == 0 && indice == 0)
+            {
+                return matrix;
             }
+
+            coluna = coluna->prev;
+            nColuna--;
+            indice = matrix->rows - 1;
         }
     }
     return matrix;
@@ -62,7 +67,7 @@ int procurarMancha(Node *ptr, Node *ptrVer, int indice, int cor, Matriz *matrix)
 {
 
     int flag = 0;
-    printf("olaaa\n");
+    // printf("olaaa\n");
     if (indice > 0 && cor == ptrVer->data[indice - 1]) // procura mancha no azulejo de cima
     {
 
@@ -72,9 +77,9 @@ int procurarMancha(Node *ptr, Node *ptrVer, int indice, int cor, Matriz *matrix)
         flag = 1;
         push(ptr, ptrVer, indice - 1, cor, matrix); // coloca na pilha a coordenada
     }
-    printf("merdaaaaaaa\n");
-    // printf("%d\n", ptrVer->data[1]);
-    printf(" %d cior    %d\n", indice, cor);
+    // printf("merdaaaaaaa\n");
+    //  printf("%d\n", ptrVer->data[1]);
+    // printf(" %d cior    %d\n", indice, cor);
     if (indice < matrix->rows - 1 && cor == ptrVer->data[indice + 1]) // procura mancha no azulejo baixo
     {
         printf("entrou\n");
@@ -84,19 +89,19 @@ int procurarMancha(Node *ptr, Node *ptrVer, int indice, int cor, Matriz *matrix)
         flag = 1;
         push(ptr, ptrVer, indice + 1, cor, matrix); // coloca na pilha a coordenada
     }
-    printf("fdssssssssss\n");
+    // printf("fdssssssssss\n");
 
-    printf("ola\n");
+    // printf("ola\n");
     if (ptrVer != matrix->head && cor == ptrVer->prev->data[indice]) // procura mancha no azulejo do lado esquerdo
     {
-        printf("aquiiiii\n");
+        // printf("aquiiiii\n");
         ptr->prev->data[indice] = -1;
         ptrVer->prev->data[indice] = -1;
         matrix->pontSpot++;
         flag = 1;
         push(ptr->prev, ptrVer->prev, indice, cor, matrix); // coloca na pilha a coordenada
     }
-    printf("shitttttttt\n");
+    // printf("shitttttttt\n");
     if (ptrVer->next != NULL && cor == ptrVer->next->data[indice]) // procura mancha no azulejo do lado direito
     {
 
@@ -148,7 +153,9 @@ Matriz *eliminateSpot(Matriz *matrix)
     }
 
     matrix->spotHead->value = matrix->pontSpot;
+    printf(" %d mancha e %d matrix\n", matrix->pontSpot, matrix->pont);
     matrix->pont = matrix->pont + (matrix->pontSpot * (matrix->pontSpot - 1));
+    printf("  %d matrix\n", matrix->pont);
     matrix->pontSpot = 0;
     return matrix;
 }
@@ -164,6 +171,22 @@ void print(Matriz *matrix)
         {
             printf("%d ", aux->data[i]);
             auxT = aux->next;
+            aux = auxT;
+        }
+        printf("\n");
+    }
+}
+void print2(Matriz *matrix)
+{
+    Node *aux, *auxT;
+
+    for (int i = 0; i < matrix->rows; i++)
+    {
+        aux = matrix->tail;
+        while (aux != NULL)
+        {
+            printf("%d ", aux->data[i]);
+            auxT = aux->prev;
             aux = auxT;
         }
         printf("\n");

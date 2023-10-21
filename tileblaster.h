@@ -34,7 +34,7 @@ typedef struct matriz
     int colu;     // Numero de colunas
     int variante; // variante que nos é pedida
     int pontSpot;
-    int pont;     // pontuação da matriz
+    int pont;    // pontuação da matriz
     int n_plays; // numero de jogadas
     bool done;
 } Matriz;
@@ -81,5 +81,7 @@ Matriz *copyMatrix(Matriz *matrix);
 void push_dfs(Matriz *matrix);
 Matriz *pop_dfs();
 int isEmpty_dfs();
+
+void print2(Matriz *matrix);
 
 #endif

@@ -41,6 +41,7 @@ Matriz *GravidadeHorizontal(Matriz *matrix)
         return matrix;
     while (coluna != NULL) // gravidade horizontal verifica se o vetor inteiro é -1 se for passa o no para o inicio da lista de colunas
     {
+        printf("OLAAAAA\n");
         cor = 0;
         for (int i = 0; i < matrix->rows; i++) // verifica se há cor
         {
@@ -51,26 +52,35 @@ Matriz *GravidadeHorizontal(Matriz *matrix)
         }
         if (cor == 0 && coluna->next == NULL && coluna != matrix->head) // caso de ser o ultimo no
         {
+
             aux = coluna;
-            coluna = NULL;
-            aux->prev->next = NULL;
+            matrix->tail = aux->prev;
+            matrix->tail->next = NULL;
             auxT = matrix->head;
             matrix->head = aux;
-            aux->next = auxT;
-            auxT->prev = aux;
+            matrix->head->next = auxT;
+            auxT->prev = matrix->head;
+            matrix->head->prev = NULL;
+            coluna = NULL;
             continue;
         }
 
         if (cor == 0 && coluna != matrix->head) // caso generico
         {
-            aux = coluna;
-            coluna = aux->next;
-            aux->next->prev = aux->prev;
-            aux->prev->next = aux->next;
+
+            aux = coluna->next;
+
+            aux->prev = coluna->prev;
+
+            coluna->prev->next = aux;
+
             auxT = matrix->head;
-            matrix->head = aux;
-            aux->next = auxT;
-            auxT->prev = aux;
+            matrix->head = coluna;
+            matrix->head->next = auxT;
+            auxT->prev = matrix->head;
+            matrix->head->prev = NULL;
+            coluna = aux;
+
             continue;
         }
 
