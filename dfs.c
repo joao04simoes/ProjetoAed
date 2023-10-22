@@ -9,7 +9,7 @@ Matriz *dfs(Matriz *matrix)
 {
     Node *coluna = matrix->tail, *colunaVer;
     Matriz *newMatrix, *matrixVer;
-    spot *spot;
+    spot *spot, *aux;
     int flag, indicolu = matrix->colu;
     matrixVer = copyMatrix(matrix);
     colunaVer = matrixVer->tail;
@@ -17,6 +17,7 @@ Matriz *dfs(Matriz *matrix)
     print(matrix);
     newMatrix = copyMatrix(matrix);
     coluna = newMatrix->tail;
+outerLoop:
     while (coluna != NULL)
     {
 
@@ -45,6 +46,7 @@ Matriz *dfs(Matriz *matrix)
                     coluna = newMatrix->tail;
                     colunaVer = matrixVer->tail;
                     indicolu = newMatrix->colu;
+
                     if (newMatrix->pont > newMatrix->variante)
                     {
                         printf("pontuação\n");
@@ -59,33 +61,35 @@ Matriz *dfs(Matriz *matrix)
                         }
                         return newMatrix;
                     }
-                    continue;
+                    goto outerLoop;
                 }
             }
 
             if (indicolu == 1 && indice == 0)
             {
-                printf("nada\n");
+
                 if (isEmpty_dfs())
                 {
-
+                    printf("nada\n");
+                    freeMatriz(matrixVer);
                     return newMatrix;
                 }
-                free(newMatrix);
-                free(matrixVer);
+                spot = newMatrix->spotHead;
+                free(spot);
+                spot = matrixVer->spotHead;
+                freeMatriz(newMatrix);
+                freeMatriz(matrixVer);
                 // ver se a pilha esta vazia
                 matrixVer = pop_dfs();
+                freeMatriz(matrixVer);
                 matrixVer = pop_dfs();
                 newMatrix = pop_dfs();
                 printf("popdfs\n");
-                spot = newMatrix->spotHead;
-                newMatrix->spotHead = newMatrix->spotHead->next;
-                matrix->n_plays--;
-                free(spot);
+
                 coluna = newMatrix->tail;
                 colunaVer = matrixVer->tail;
                 indicolu = newMatrix->colu;
-                break;
+                goto outerLoop;
             }
         }
         coluna = coluna->prev;

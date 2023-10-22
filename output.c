@@ -58,6 +58,19 @@ void escreverFicheiro(Matriz *matrix, FILE *f)
     return;
   }
 
+  if (matrix->variante > -1) // se for variante 2 percorre a matriz toda e escreve no ficheiro a matriz
+  {
+    fprintf(f, "%d %d \n", matrix->n_plays, matrix->pont);
+    for (int i = 0; i < matrix->n_plays; i++)
+    {
+      fprintf(f, "%d %d \n", aux->cordX, aux->cordY);
+      aux = aux->prev;
+    }
+
+    fprintf(f, "\n");
+    return;
+  }
+
   fprintf(f, "\n");
   return;
 }
