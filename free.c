@@ -7,12 +7,12 @@
 // funçao free da matriz
 void freeMatriz(Matriz *matrix)
 {
-    printf("antes de iniciar\n");
+
     Node *aux = matrix->head;
 
     while (aux != NULL)
     {
-        printf("free\n");
+
         free(matrix->head->data); // free do vetor de dados
         aux = matrix->head->next;
         free(matrix->head); // free do no da lista

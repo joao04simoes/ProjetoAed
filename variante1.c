@@ -68,7 +68,7 @@ int procurarMancha(Node *ptr, Node *ptrVer, int indice, int cor, Matriz *matrix)
 {
 
     int flag = 0;
-    // printf("olaaa\n");
+
     if (indice > 0 && cor == ptrVer->data[indice - 1]) // procura mancha no azulejo de cima
     {
 
@@ -78,32 +78,30 @@ int procurarMancha(Node *ptr, Node *ptrVer, int indice, int cor, Matriz *matrix)
         flag = 1;
         push(ptr, ptrVer, indice - 1, cor, matrix); // coloca na pilha a coordenada
     }
-    // printf("merdaaaaaaa\n");
+
     //  printf("%d\n", ptrVer->data[1]);
     // printf(" %d cior    %d\n", indice, cor);
     if (indice < matrix->rows - 1 && cor == ptrVer->data[indice + 1]) // procura mancha no azulejo baixo
     {
-        printf("entrou\n");
+
         ptr->data[indice + 1] = -1;
         ptrVer->data[indice + 1] = -1;
         matrix->pontSpot++;
         flag = 1;
         push(ptr, ptrVer, indice + 1, cor, matrix); // coloca na pilha a coordenada
     }
-    // printf("fdssssssssss\n");
 
-    // printf("ola\n");
-    if (ptrVer != matrix->head && cor == ptrVer->prev->data[indice]) // procura mancha no azulejo do lado esquerdo
+    if (ptr != matrix->head && cor == ptrVer->prev->data[indice]) // procura mancha no azulejo do lado esquerdo
     {
-        // printf("aquiiiii\n");
+
         ptr->prev->data[indice] = -1;
         ptrVer->prev->data[indice] = -1;
         matrix->pontSpot++;
         flag = 1;
         push(ptr->prev, ptrVer->prev, indice, cor, matrix); // coloca na pilha a coordenada
     }
-    // printf("shitttttttt\n");
-    if (ptrVer->next != NULL && cor == ptrVer->next->data[indice]) // procura mancha no azulejo do lado direito
+
+    if (ptr->next != NULL && cor == ptrVer->next->data[indice]) // procura mancha no azulejo do lado direito
     {
 
         ptr->next->data[indice] = -1;
@@ -149,7 +147,6 @@ Matriz *eliminateSpot(Matriz *matrix)
     // printf("eliminate\n");
     while (!isEmpty())
     { // da pop da lista enquanto houver elementos para procurar
-
         pop();
     }
 
