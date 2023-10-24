@@ -60,13 +60,20 @@ void escreverFicheiro(Matriz *matrix, FILE *f)
 
   if (matrix->variante > -1) // se for variante 2 percorre a matriz toda e escreve no ficheiro a matriz
   {
-    fprintf(f, "%d %d \n", matrix->n_plays, matrix->pont);
-    for (int i = 0; i < matrix->n_plays; i++)
-    {
-      fprintf(f, "%d %d \n", aux->cordX, aux->cordY);
-      aux = aux->prev;
-    }
 
+    if (matrix->done == true)
+    {
+      fprintf(f, "%d %d \n", matrix->n_plays, matrix->pont);
+      for (int i = 0; i < matrix->n_plays; i++)
+      {
+        fprintf(f, "%d %d \n", aux->cordX, aux->cordY);
+        aux = aux->prev;
+      }
+    }
+    else
+    {
+      fprintf(f, "0 -1\n");
+    }
     fprintf(f, "\n");
     return;
   }

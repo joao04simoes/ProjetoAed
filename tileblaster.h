@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+
+#define Item void *
 typedef struct Node
 {
     int *data;  // Ponteiro para a coluna
@@ -40,7 +42,6 @@ typedef struct matriz
 } Matriz;
 
 extern struct pilha_node *top;
-extern struct pilha_node *topDfs;
 
 struct pilha_node // estrura de cada elemnto da pilha
 {
@@ -78,12 +79,28 @@ void print(Matriz *matrix);
 Matriz *initMatrix(Matriz *matrix);
 Matriz *dfs(Matriz *matrix);
 Matriz *copyMatrix(Matriz *matrix, Matriz *newMatrix);
-Matriz *iniciarMatriz(Matriz *matrix, Matriz *newMatrix);
 
-void push_dfs(Matriz *matrix);
+/*void push_dfs(Matriz *matrix);
 Matriz *pop_dfs();
-int isEmpty_dfs();
+int isEmpty_dfs();*/
 
 void print2(Matriz *matrix);
+
+struct stack_
+{
+    int top;
+    unsigned capacity;
+    Item *array;
+};
+
+typedef struct stack_ Stack;
+
+Stack *createStack(unsigned capacity);
+int isFull(Stack *);
+int isEmpty_dfs(Stack *);
+void push_dfs(Stack *, Item);
+Item pop_dfs(Stack *stack);
+Item peek(Stack *);
+void deleteStack(Stack *stack);
 
 #endif

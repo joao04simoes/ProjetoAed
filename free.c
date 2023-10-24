@@ -18,7 +18,7 @@ void freeMatriz(Matriz *matrix)
         free(matrix->head); // free do no da lista
         matrix->head = aux;
     }
-    free(matrix); // free da matriz ola
+    free(matrix);
     return;
 }
 

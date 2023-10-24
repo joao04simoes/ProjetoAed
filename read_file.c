@@ -49,6 +49,7 @@ Matriz *read_file(const char *filename, FILE *fp, char *firstLine)
 
 Matriz *initMatrix(Matriz *matrix)
 {
+
 	for (int i = 0; i < matrix->colu; i++)
 	{
 

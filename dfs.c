@@ -7,23 +7,25 @@
 Matriz *dfs(Matriz *matrix)
 
 {
+    Stack *stack = createStack((matrix->colu * matrix->rows));
     Node *coluna = matrix->tail, *colunaVer;
     spot *spot, *aux;
+    Matriz *newMatrix = NULL, *matrixVer = NULL;
     int flag, indicolu = matrix->colu;
     int one = 1;
     int cor = 0;
     int mudar = 1;
-    Matriz *newMatrix = (Matriz *)malloc(sizeof(Matriz));
-    newMatrix = iniciarMatriz(matrix, newMatrix);
-    Matriz *matrixVer = (Matriz *)malloc(sizeof(Matriz));
-    matrixVer = iniciarMatriz(matrix, matrixVer);
-    colunaVer = matrixVer->tail;
 
+    newMatrix = copyMatrix(matrix, newMatrix);
+    matrixVer = copyMatrix(matrix, matrixVer);
+
+    colunaVer = matrixVer->tail;
     coluna = newMatrix->tail;
 outerLoop:
+
     while (coluna != NULL)
     {
-        // printf("coluna %d\n", indicolu);
+
         for (int indice = newMatrix->rows - 1; indice > -1; indice--)
         {
 
@@ -34,17 +36,18 @@ outerLoop:
                 {
                     // printf("coluna %d  e indice %d e cor %d\n", indicolu, indice, cor);
 
-                    push_dfs(matrix);
+                    push_dfs(stack, (Item)matrix);
                     coluna->data[indice] = -1;
                     colunaVer->data[indice] = -1;
                     newMatrix->pontSpot++;
                     newMatrix = createSpotList(newMatrix, indice, indicolu);
                     newMatrix = eliminateSpot(newMatrix);
-                    push_dfs(matrixVer);
+
+                    push_dfs(stack, (Item)matrixVer);
                     newMatrix = GravidadeVertical(newMatrix);
                     newMatrix = GravidadeHorizontal(newMatrix);
-                    matrixVer = iniciarMatriz(newMatrix, matrixVer);
-                    matrix = iniciarMatriz(newMatrix, matrix);
+                    matrixVer = copyMatrix(newMatrix, matrixVer);
+                    matrix = copyMatrix(newMatrix, matrix);
                     coluna = newMatrix->tail;
                     colunaVer = matrixVer->tail;
                     indicolu = newMatrix->colu;
@@ -55,12 +58,16 @@ outerLoop:
                         newMatrix->done = true;
                         freeMatriz(matrixVer);
                         freeMatriz(matrix);
-                        while (!isEmpty_dfs())
+                        while (isEmpty_dfs(stack) == 0)
                         {
-                            matrixVer = pop_dfs();
 
-                            freeMatriz(matrixVer);
+                            Matriz *aux;
+                            aux = (Matriz *)pop_dfs(stack);
+
+                            freeMatriz(aux);
                         }
+
+                        deleteStack(stack);
                         return newMatrix;
                     }
                     goto outerLoop;
@@ -69,28 +76,29 @@ outerLoop:
 
             if (indicolu == 1 && indice == 0)
             {
-                if (isEmpty_dfs())
+
+                if (isEmpty_dfs(stack) == 1)
                 {
                     print(newMatrix);
-                    printf("nada\n");
+
                     print(matrixVer);
                     freeMatriz(matrixVer);
                     freeMatriz(matrix);
+                    newMatrix->done = false;
+                    deleteStack(stack);
                     return newMatrix;
                 }
 
                 spot = newMatrix->spotHead;
                 free(spot);
-                freeMatriz(matrixVer);
-                freeMatriz(matrix);
-                // printf("free spot\n");
                 freeMatriz(newMatrix);
-
+                freeMatriz(matrix);
+                freeMatriz(matrixVer);
                 // ver se a pilha esta vazia
 
-                matrixVer = pop_dfs();
-                newMatrix = pop_dfs();
-                matrix = iniciarMatriz(newMatrix, matrix);
+                matrixVer = (Matriz *)pop_dfs(stack);
+                newMatrix = (Matriz *)pop_dfs(stack);
+                matrix = copyMatrix(newMatrix, matrix);
                 coluna = newMatrix->tail;
                 colunaVer = matrixVer->tail;
                 indicolu = newMatrix->colu;
@@ -101,6 +109,7 @@ outerLoop:
         colunaVer = colunaVer->prev;
         indicolu--;
     }
+    deleteStack(stack);
     return newMatrix;
 }
 
@@ -108,7 +117,22 @@ Matriz *copyMatrix(Matriz *matrix, Matriz *newMatrix)
 {
 
     Node *aux, *newaux;
+    newMatrix = (Matriz *)malloc(sizeof(Matriz));
+    newMatrix->colu = matrix->colu;
+    newMatrix->rows = matrix->rows;
+    newMatrix->rows = matrix->rows;
+    newMatrix->colu = matrix->colu;
+    newMatrix->pont = matrix->pont;
+    newMatrix->spotHead = matrix->spotHead;
+    newMatrix->spotTail = matrix->spotTail;
+    newMatrix->n_plays = matrix->n_plays;
+    newMatrix->variante = matrix->variante;
+    newMatrix->pontSpot = 0;
+    newMatrix->done = false;
+    newMatrix->head = NULL;
+    newMatrix->tail = NULL;
 
+    newMatrix = initMatrix(newMatrix);
     aux = matrix->head;
     newaux = newMatrix->head;
 
@@ -121,24 +145,5 @@ Matriz *copyMatrix(Matriz *matrix, Matriz *newMatrix)
         aux = aux->next;
         newaux = newaux->next;
     }
-    return newMatrix;
-}
-
-Matriz *iniciarMatriz(Matriz *matrix, Matriz *newMatrix)
-{
-    newMatrix->rows = matrix->rows;
-    newMatrix->colu = matrix->colu;
-    newMatrix->pont = matrix->pont;
-    newMatrix->spotHead = matrix->spotHead;
-    newMatrix->spotTail = matrix->spotTail;
-    newMatrix->n_plays = matrix->n_plays;
-    newMatrix->head = NULL;
-    newMatrix->tail = NULL;
-    newMatrix->variante = matrix->variante;
-    newMatrix->pontSpot = 0;
-    newMatrix->done = false;
-
-    newMatrix = initMatrix(newMatrix);
-    newMatrix = copyMatrix(matrix, newMatrix);
     return newMatrix;
 }
