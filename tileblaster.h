@@ -56,6 +56,7 @@ Matriz *read_file(const char *filename, FILE *fp, char *firstLine);
 
 Matriz *variante1(Matriz *matrix);
 int procurarMancha(Node *ptr, Node *ptrVer, int indice, int cor, Matriz *matrix);
+int existeMancha(Node *ptr, Node *ptrVer, int indice, int cor, Matriz *matrix);
 Matriz *GravidadeHorizontal(Matriz *matrix);
 Matriz *GravidadeVertical(Matriz *matrix);
 
@@ -76,7 +77,8 @@ void print(Matriz *matrix);
 
 Matriz *initMatrix(Matriz *matrix);
 Matriz *dfs(Matriz *matrix);
-Matriz *copyMatrix(Matriz *matrix);
+Matriz *copyMatrix(Matriz *matrix, Matriz *newMatrix);
+Matriz *iniciarMatriz(Matriz *matrix, Matriz *newMatrix);
 
 void push_dfs(Matriz *matrix);
 Matriz *pop_dfs();
