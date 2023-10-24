@@ -190,3 +190,37 @@ void print2(Matriz *matrix)
         printf("\n");
     }
 }
+
+int existeMancha(Node *ptr, Node *ptrVer, int indice, int cor, Matriz *matrix)
+{
+
+    int flag = 0;
+
+    if (indice > 0 && cor == ptrVer->data[indice - 1]) // procura mancha no azulejo de cima
+    {
+        flag = 1;
+        return flag;
+    }
+
+    if (indice < matrix->rows - 1 && cor == ptrVer->data[indice + 1]) // procura mancha no azulejo baixo
+    {
+
+        flag = 1;
+        return flag;
+    }
+
+    if (ptr != matrix->head && cor == ptrVer->prev->data[indice]) // procura mancha no azulejo do lado esquerdo
+    {
+        flag = 1;
+        return flag;
+    }
+
+    if (ptr->next != NULL && cor == ptrVer->next->data[indice]) // procura mancha no azulejo do lado direito
+    {
+
+        flag = 1;
+        return flag;
+    }
+
+    return flag;
+}

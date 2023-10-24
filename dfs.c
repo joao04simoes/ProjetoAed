@@ -8,15 +8,17 @@ Matriz *dfs(Matriz *matrix)
 
 {
     Node *coluna = matrix->tail, *colunaVer;
-    Matriz *newMatrix, *matrixVer;
     spot *spot, *aux;
     int flag, indicolu = matrix->colu;
     int one = 1;
     int cor = 0;
     int mudar = 1;
-    matrixVer = copyMatrix(matrix);
+    Matriz *newMatrix = (Matriz *)malloc(sizeof(Matriz));
+    newMatrix = iniciarMatriz(matrix, newMatrix);
+    Matriz *matrixVer = (Matriz *)malloc(sizeof(Matriz));
+    matrixVer = iniciarMatriz(matrix, matrixVer);
     colunaVer = matrixVer->tail;
-    newMatrix = copyMatrix(matrix);
+
     coluna = newMatrix->tail;
 outerLoop:
     while (coluna != NULL)
@@ -41,8 +43,8 @@ outerLoop:
                     push_dfs(matrixVer);
                     newMatrix = GravidadeVertical(newMatrix);
                     newMatrix = GravidadeHorizontal(newMatrix);
-                    matrixVer = copyMatrix(newMatrix);
-                    matrix = copyMatrix(newMatrix);
+                    matrixVer = iniciarMatriz(newMatrix, matrixVer);
+                    matrix = iniciarMatriz(newMatrix, matrix);
                     coluna = newMatrix->tail;
                     colunaVer = matrixVer->tail;
                     indicolu = newMatrix->colu;
@@ -88,7 +90,7 @@ outerLoop:
 
                 matrixVer = pop_dfs();
                 newMatrix = pop_dfs();
-                matrix = copyMatrix(newMatrix);
+                matrix = iniciarMatriz(newMatrix, matrix);
                 coluna = newMatrix->tail;
                 colunaVer = matrixVer->tail;
                 indicolu = newMatrix->colu;
@@ -102,25 +104,10 @@ outerLoop:
     return newMatrix;
 }
 
-Matriz *copyMatrix(Matriz *matrix)
+Matriz *copyMatrix(Matriz *matrix, Matriz *newMatrix)
 {
 
     Node *aux, *newaux;
-    Matriz *newMatrix = (Matriz *)malloc(sizeof(Matriz));
-
-    newMatrix->rows = matrix->rows;
-    newMatrix->colu = matrix->colu;
-    newMatrix->pont = matrix->pont;
-    newMatrix->spotHead = matrix->spotHead;
-    newMatrix->spotTail = matrix->spotTail;
-    newMatrix->n_plays = matrix->n_plays;
-    newMatrix->head = NULL;
-    newMatrix->tail = NULL;
-    newMatrix->variante = matrix->variante;
-    newMatrix->pontSpot = 0;
-    newMatrix->done = false;
-
-    newMatrix = initMatrix(newMatrix);
 
     aux = matrix->head;
     newaux = newMatrix->head;
@@ -134,5 +121,24 @@ Matriz *copyMatrix(Matriz *matrix)
         aux = aux->next;
         newaux = newaux->next;
     }
+    return newMatrix;
+}
+
+Matriz *iniciarMatriz(Matriz *matrix, Matriz *newMatrix)
+{
+    newMatrix->rows = matrix->rows;
+    newMatrix->colu = matrix->colu;
+    newMatrix->pont = matrix->pont;
+    newMatrix->spotHead = matrix->spotHead;
+    newMatrix->spotTail = matrix->spotTail;
+    newMatrix->n_plays = matrix->n_plays;
+    newMatrix->head = NULL;
+    newMatrix->tail = NULL;
+    newMatrix->variante = matrix->variante;
+    newMatrix->pontSpot = 0;
+    newMatrix->done = false;
+
+    newMatrix = initMatrix(newMatrix);
+    newMatrix = copyMatrix(matrix, newMatrix);
     return newMatrix;
 }
