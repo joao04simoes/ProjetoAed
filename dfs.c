@@ -31,15 +31,16 @@ outerLoop:
 
             if (coluna->data[indice] != -1) // colocar colunaver talvez
             {
-
+                cor = coluna->data[indice];
+                coluna->data[indice] = -1;
+                colunaVer->data[indice] = -1;
+                newMatrix->pontSpot++;
                 if ((flag = procurarMancha(coluna, colunaVer, indice, coluna->data[indice], newMatrix)) == 1)
                 {
                     // printf("coluna %d  e indice %d e cor %d\n", indicolu, indice, cor);
 
                     push_dfs(stack, (Item)matrix);
-                    coluna->data[indice] = -1;
-                    colunaVer->data[indice] = -1;
-                    newMatrix->pontSpot++;
+
                     newMatrix = createSpotList(newMatrix, indice, indicolu);
                     newMatrix = eliminateSpot(newMatrix);
 
@@ -71,6 +72,13 @@ outerLoop:
                         return newMatrix;
                     }
                     goto outerLoop;
+                }
+                else
+                {
+
+                    coluna->data[indice] = cor;
+                    colunaVer->data[indice] = cor;
+                    newMatrix->pontSpot--;
                 }
             }
 

@@ -11,6 +11,7 @@ Matriz *variante1(Matriz *matrix)
     int indice = matrix->rows - 1;
     int nColuna = matrix->colu;
     int flag = 0;
+    int cor = 0;
     matrix->pontSpot = 0;
 
     while (coluna != NULL && indice >= 0)
@@ -20,12 +21,13 @@ Matriz *variante1(Matriz *matrix)
         // printf(" %d olaaaaaa e %d indi \n", nColuna, coluna->data[indice]);
         if (coluna->data[indice] != -1)
         {
+            cor = coluna->data[indice];
+            coluna->data[indice] = -1;
+            matrix->pontSpot++;
 
-            if ((flag = procurarMancha(coluna, coluna, indice, coluna->data[indice], matrix)) == 1) // verifica se existe mancha na coordenada
+            if ((flag = procurarMancha(coluna, coluna, indice, cor, matrix)) == 1) // verifica se existe mancha na coordenada
             {
 
-                coluna->data[indice] = -1;
-                matrix->pontSpot++;
                 matrix = createSpotList(matrix, indice, nColuna);
                 matrix = eliminateSpot(matrix);
                 matrix = GravidadeVertical(matrix);
@@ -41,6 +43,12 @@ Matriz *variante1(Matriz *matrix)
                 nColuna = matrix->colu;
                 indice = matrix->rows - 1;
                 continue;
+            }
+            else
+            {
+
+                coluna->data[indice] = cor;
+                matrix->pontSpot--;
             }
         }
         if (indice > 0)
@@ -76,7 +84,7 @@ int procurarMancha(Node *ptr, Node *ptrVer, int indice, int cor, Matriz *matrix)
         ptrVer->data[indice - 1] = -1;
         matrix->pontSpot++;
         flag = 1;
-        push(ptr, ptrVer, indice - 1, cor, matrix); // coloca na pilha a coordenada
+        procurarMancha(ptr, ptrVer, indice - 1, cor, matrix); // coloca na pilha a coordenada
     }
 
     //  printf("%d\n", ptrVer->data[1]);
@@ -88,7 +96,7 @@ int procurarMancha(Node *ptr, Node *ptrVer, int indice, int cor, Matriz *matrix)
         ptrVer->data[indice + 1] = -1;
         matrix->pontSpot++;
         flag = 1;
-        push(ptr, ptrVer, indice + 1, cor, matrix); // coloca na pilha a coordenada
+        procurarMancha(ptr, ptrVer, indice + 1, cor, matrix); // coloca na pilha a coordenada
     }
 
     if (ptr != matrix->head && cor == ptrVer->prev->data[indice]) // procura mancha no azulejo do lado esquerdo
@@ -98,7 +106,7 @@ int procurarMancha(Node *ptr, Node *ptrVer, int indice, int cor, Matriz *matrix)
         ptrVer->prev->data[indice] = -1;
         matrix->pontSpot++;
         flag = 1;
-        push(ptr->prev, ptrVer->prev, indice, cor, matrix); // coloca na pilha a coordenada
+        procurarMancha(ptr->prev, ptrVer->prev, indice, cor, matrix); // coloca na pilha a coordenada
     }
 
     if (ptr->next != NULL && cor == ptrVer->next->data[indice]) // procura mancha no azulejo do lado direito
@@ -108,7 +116,7 @@ int procurarMancha(Node *ptr, Node *ptrVer, int indice, int cor, Matriz *matrix)
         ptrVer->next->data[indice] = -1;
         matrix->pontSpot++;
         flag = 1;
-        push(ptr->next, ptrVer->next, indice, cor, matrix); // coloca na pilha a coordenada
+        procurarMancha(ptr->next, ptrVer->next, indice, cor, matrix); // coloca na pilha a coordenada
     }
 
     return flag;
@@ -145,10 +153,6 @@ Matriz *createSpotList(Matriz *matrix, int cordX, int cordY)
 Matriz *eliminateSpot(Matriz *matrix)
 {
     // printf("eliminate\n");
-    while (!isEmpty())
-    { // da pop da lista enquanto houver elementos para procurar
-        pop();
-    }
 
     // printf("after pop\n");
     // printf(" %d mancha e %d matrix\n", matrix->pontSpot, matrix->pont);
