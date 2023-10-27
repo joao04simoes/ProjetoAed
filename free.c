@@ -34,3 +34,16 @@ void free_spotlist(Matriz *matrix)
     }
     return;
 }
+void free_maxSpot(Matriz *matrix)
+{
+
+    spot *aux = matrix->maxSpot;
+    for (int i = 0; i < matrix->maxPlays; i++)
+    {
+
+        aux = matrix->maxSpot->prev;
+        free(matrix->maxSpot);
+        matrix->maxSpot = aux;
+    }
+    return;
+}

@@ -22,19 +22,19 @@
 int main(int argc, char *argv[])
 {
 
-	clock_t start, end;
+	/*clock_t start, end;
 	double execution_time;
-	start = clock();
+	start = clock();*/
 	Matriz *matrix;
 	FILE *fp, *fs;
-	char firstLine[100];
+	int firstLine;
 	if (argc != 2)
 	{
 		return 0;
 	}
 
 	const char *filename = argv[1]; // guarda o nome do ficheiro
-	printf("%s\n", filename);
+
 	fp = fopen(filename, "r");
 	if (fp == NULL)
 	{
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 	}
 
 	fs = output(filename);
-	while (fgets(firstLine, sizeof(firstLine), fp) != NULL)
+	while (fscanf(fp, "%d", &firstLine) == 1)
 	{
 
 		matrix = read_file(filename, fp, firstLine); // chamar a função de leitura do ficheiro
@@ -60,6 +60,10 @@ int main(int argc, char *argv[])
 				matrix = variante1(matrix);
 			}
 		}
+		if (matrix->variante == -3)
+		{
+			matrix = dfsVar3(matrix);
+		}
 
 		escreverFicheiro(matrix, fs); // escreve no ficheiro o resultaod da matriz
 		free_spotlist(matrix);
@@ -67,9 +71,9 @@ int main(int argc, char *argv[])
 	}
 	fclose(fp);
 	fclose(fs);
-	end = clock();
+	/*end = clock();
 	execution_time = ((double)(end - start)) / CLOCKS_PER_SEC;
-	printf("%f\n", execution_time);
+	printf("%f\n", execution_time);*/
 
 	return 0;
 }

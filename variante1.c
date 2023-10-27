@@ -38,7 +38,7 @@ Matriz *variante1(Matriz *matrix)
                 print(matrix);
                 printf("\n");
                 print2(matrix);*/
-                printf("%d pontuaçao \n", matrix->pont);
+                // printf("%d pontuaçao \n", matrix->pont);
                 coluna = matrix->tail;
                 nColuna = matrix->colu;
                 indice = matrix->rows - 1;
@@ -162,7 +162,7 @@ Matriz *eliminateSpot(Matriz *matrix)
     return matrix;
 }
 
-void print(Matriz *matrix)
+/*void print(Matriz *matrix)
 {
     Node *aux, *auxT;
 
@@ -193,7 +193,7 @@ void print2(Matriz *matrix)
         }
         printf("\n");
     }
-}
+}*/
 
 int existeMancha(Node *ptr, Node *ptrVer, int indice, int cor, Matriz *matrix)
 {

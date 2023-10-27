@@ -5,13 +5,19 @@
 #include "tileblaster.h"
 
 /* function to create a stack of given capacity; initializes size as 0 */
-Stack *createStack(unsigned capacity)
+Stack *createStack(unsigned capacity, Matriz *matrix)
 {
     Stack *stack = (Stack *)malloc(sizeof(Stack));
     stack->capacity = capacity;
     /* unused so far */
     stack->top = -1;
-    stack->array = (Item *)malloc(stack->capacity * sizeof(Item));
+    stack->array = (Matriz **)malloc((stack->capacity) * sizeof(Matriz *));
+    // stack->capacity = stack->capacity / 4;
+    for (int i = 0; i < stack->capacity; i++)
+    {
+        stack->array[i] = iniciarMatrix(matrix, stack->array[i]);
+    }
+
     return stack;
 }
 
@@ -28,41 +34,55 @@ int isEmpty_dfs(Stack *stack)
 }
 
 /* Function to add an item to stack.  It increases top by 1 */
-void push_dfs(Stack *stack, Item item)
+void push_dfs(Stack *stack, Matriz *matrix)
 {
     /* cannot add if it is full */
-    if (isFull(stack))
-        return;
-    stack->array[++stack->top] = item;
+
+    /*if (isFull(stack))
+    {
+        for (int i = stack->capacity; i < stack->capacity * 2; i++)
+        {
+            stack->array[i] = iniciarMatrix(matrix, stack->array[i]);
+        }
+        stack->capacity = stack->capacity * 2;
+    }*/
+
+    int i = ++stack->top;
+    matrix = copyMatrix(matrix, stack->array[i]);
 
     return;
 }
 
 /* Function to remove an item from stack.  It decreases top by 1 */
-Item pop_dfs(Stack *stack)
+Matriz *pop_dfs(Stack *stack, Matriz *matrix)
 {
+
     /* nothing to return if it is empty */
     if (isEmpty_dfs(stack))
         return NULL;
+    int i = stack->top--;
+    matrix = copyMatrix(stack->array[i], matrix);
 
-    Item poppedItem = stack->array[stack->top--];
-
-    return (poppedItem);
+    return matrix;
 }
 
 /* Function to return the top from stack without removing it */
-Item peek(Stack *stack)
+/*Item peek(Stack *stack)
 {
     if (isEmpty_dfs(stack))
         return NULL;
 
     return stack->array[stack->top];
-}
+}*/
 
 /* function to delete all elements form stack */
 void deleteStack(Stack *stack)
 {
     /* note it does not delete the elements, just the stack itself */
+    for (int i = 0; i < stack->capacity; i++)
+    {
+        freeMatriz(stack->array[i]);
+    }
     free(stack->array);
     free(stack);
 

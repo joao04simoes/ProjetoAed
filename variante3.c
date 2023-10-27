@@ -4,16 +4,19 @@
 #include <stdbool.h>
 #include "tileblaster.h"
 
-Matriz *dfs(Matriz *matrix)
+Matriz *dfsVar3(Matriz *matrix)
 
 {
     Stack *stack = createStack((matrix->colu * matrix->rows), matrix);
     Node *coluna = matrix->tail, *colunaVer;
-    spot *spot;
+    spot *spot, *maxSpot = NULL;
     Matriz *newMatrix = NULL, *matrixVer = NULL;
     int flag, indicolu = matrix->colu;
 
     int cor = 0;
+    int playMax = 0;
+    int antPlaymax = 0;
+    int maxPont = 0;
     int bond = 0;
     int lastColor = 0;
     int lastSize = 0;
@@ -44,14 +47,16 @@ outerLoop:
 
                 if ((flag = procurarMancha(coluna, colunaVer, indice, cor, newMatrix)) == 1)
                 {
+                    // printf("coluna %d  e indice %d e cor %d\n", indicolu, indice, cor);
 
-                    bond = thereishope_2(newMatrix, lista, cor);
+                    bond = thereishope_3(newMatrix, lista, cor, maxPont);
                     if (bond == 1)
                     {
                         push_dfs(stack, matrix);
                         lastColor = cor;
                         lastSize = newMatrix->pontSpot;
 
+                        // printf("%d\n", newMatrix->pontSpot);
                         lastSize = newMatrix->pontSpot;
                         lastColor = cor;
 
@@ -69,24 +74,6 @@ outerLoop:
                         coluna = newMatrix->tail;
                         colunaVer = matrixVer->tail;
                         indicolu = newMatrix->colu;
-
-                        if (newMatrix->pont >= newMatrix->variante)
-                        {
-
-                            newMatrix->done = true;
-                            freeMatriz(matrixVer);
-                            freeMatriz(matrix);
-                            while (isEmpty_dfs(stack) == 0)
-                            {
-                                deleteStack(stack);
-                                free_lista_manchas(lista);
-                                return newMatrix;
-                            }
-                            deleteStack(stack);
-                            free_lista_manchas(lista);
-                            return newMatrix;
-                        }
-                        goto outerLoop;
                     }
                     else
                     {
@@ -100,7 +87,6 @@ outerLoop:
                 }
                 else
                 {
-
                     coluna->data[indice] = cor;
                     colunaVer->data[indice] = cor;
                     newMatrix->pontSpot--;
@@ -109,19 +95,30 @@ outerLoop:
 
             if (indicolu == 1 && indice == 0)
             {
+                if (newMatrix->pont > maxPont)
+                {
+                    // printf("maxpont\n");
+                    maxPont = newMatrix->pont;
+                    antPlaymax = playMax;
+                    playMax = newMatrix->n_plays;
+                    maxSpot = maxSpotList(maxSpot, matrix, antPlaymax, playMax);
+                }
 
                 if (stack->top == -1)
                 {
+
                     freeMatriz(matrixVer);
                     freeMatriz(matrix);
                     newMatrix->done = false;
                     deleteStack(stack);
+                    newMatrix->maxPont = maxPont;
+                    newMatrix->maxSpot = maxSpot;
+                    newMatrix->maxPlays = playMax;
                     free_lista_manchas(lista);
                     return newMatrix;
                 }
 
                 add_tiles(newMatrix->lastSize, lista, newMatrix->lastColor);
-
                 spot = newMatrix->spotHead;
                 free(spot);
 
@@ -139,71 +136,47 @@ outerLoop:
         colunaVer = colunaVer->prev;
         indicolu--;
     }
-    deleteStack(stack);
     free_lista_manchas(lista);
+    deleteStack(stack);
     return newMatrix;
 }
 
-Matriz *iniciarMatrix(Matriz *matrix, Matriz *newMatrix)
+spot *maxSpotList(spot *maxspot, Matriz *matrix, int n_antigas, int n_novas)
 {
+    spot *aux = maxspot, *auxT = matrix->spotHead, *guarda;
 
-    Node *aux, *newaux;
-    newMatrix = (Matriz *)malloc(sizeof(Matriz));
-    newMatrix->colu = matrix->colu;
-    newMatrix->rows = matrix->rows;
-    newMatrix->rows = matrix->rows;
-    newMatrix->colu = matrix->colu;
-    newMatrix->pont = matrix->pont;
-    newMatrix->spotHead = matrix->spotHead;
-    newMatrix->spotTail = matrix->spotTail;
-    newMatrix->n_plays = matrix->n_plays;
-    newMatrix->variante = matrix->variante;
-    newMatrix->pontSpot = 0;
-    newMatrix->maxPont = 0;
-    newMatrix->done = false;
-    newMatrix->head = NULL;
-    newMatrix->tail = NULL;
-
-    newMatrix = initMatrix(newMatrix);
-    aux = matrix->head;
-    newaux = newMatrix->head;
-
-    while (aux != NULL)
+    for (int i = 0; i < n_antigas; i++)
     {
-        memcpy(newaux->data, aux->data, matrix->rows * sizeof(int));
-        aux = aux->next;
-        newaux = newaux->next;
+        // printf("freeee\n");
+        guarda = aux->prev;
+        free(aux);
+        aux = guarda;
     }
-    return newMatrix;
-}
-
-Matriz *copyMatrix(Matriz *matrix, Matriz *newMatrix)
-{
-
-    Node *aux, *newaux;
-    newMatrix->colu = matrix->colu;
-    newMatrix->rows = matrix->rows;
-    newMatrix->rows = matrix->rows;
-    newMatrix->colu = matrix->colu;
-    newMatrix->pont = matrix->pont;
-    newMatrix->lastColor = matrix->lastColor;
-    newMatrix->lastSize = matrix->lastSize;
-    newMatrix->maxPont = matrix->pont;
-    newMatrix->spotHead = matrix->spotHead;
-    newMatrix->spotTail = matrix->spotTail;
-    newMatrix->n_plays = matrix->n_plays;
-    newMatrix->variante = matrix->variante;
-    newMatrix->pontSpot = 0;
-    newMatrix->done = false;
-
-    aux = matrix->head;
-    newaux = newMatrix->head;
-
-    while (aux != NULL)
+    for (int i = 0; i < n_novas; i++)
     {
-        memcpy(newaux->data, aux->data, matrix->rows * sizeof(int));
-        aux = aux->next;
-        newaux = newaux->next;
+
+        spot *newSpot = (spot *)malloc(sizeof(spot));
+        // printf("malloc\n");
+        if (maxspot == NULL)
+        {
+            // printf("primeiro\n");
+            maxspot = newSpot;
+            maxspot->prev = NULL;
+            maxspot->next = NULL;
+            maxspot->cordX = auxT->cordX;
+            maxspot->cordY = auxT->cordY;
+        }
+        else
+        {
+            // printf("generico\n");
+            guarda = maxspot;
+            maxspot = newSpot;
+            maxspot->prev = guarda;
+            maxspot->next = NULL;
+            maxspot->cordX = auxT->cordX;
+            maxspot->cordY = auxT->cordY;
+        }
+        auxT = auxT->next;
     }
-    return newMatrix;
+    return maxspot;
 }

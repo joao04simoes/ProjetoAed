@@ -33,7 +33,7 @@ FILE *output(const char *filename)
 
   strncpy(nome, filename, length_without_extension);
   nome[length_without_extension] = '\0';
-  strcat(nome, ".singlestep"); // faz a junção do nome com a extensão
+  strcat(nome, ".tileblasts"); // faz a junção do nome com a extensão
 
   f = fopen(nome, "w");
   free(nome);
@@ -77,7 +77,17 @@ void escreverFicheiro(Matriz *matrix, FILE *f)
     fprintf(f, "\n");
     return;
   }
-
+  if (matrix->variante == -3)
+  {
+    aux = matrix->maxSpot;
+    fprintf(f, "%d %d\n", matrix->maxPlays, matrix->maxPont);
+    for (int i = 0; i < matrix->maxPlays; i++)
+    {
+      fprintf(f, "%d %d\n", aux->cordX, aux->cordY);
+      aux = aux->prev;
+    }
+    free_maxSpot(matrix);
+  }
   fprintf(f, "\n");
   return;
 }

@@ -5,19 +5,26 @@
 #include "tileblaster.h"
 
 // faz leitura do ficheiro de entrada
-Matriz *read_file(const char *filename, FILE *fp, char *firstLine)
+Matriz *read_file(const char *filename, FILE *fp, int firstLine)
 {
 
 	Matriz *matrix = (Matriz *)malloc(sizeof(Matriz));
 
 	char buffer[5000]; // Buffer to read lines from the file
 
-	sscanf(firstLine, "%d %d %d", &matrix->rows, &matrix->colu, &matrix->variante); // guarda o cabeçalho na estrutura da matriz
+	matrix->rows = firstLine;
+
+	if (fscanf(fp, "%d", &matrix->colu) == 1)
+		;
+
+	if (fscanf(fp, "%d", &matrix->variante) == 1)
+		;
 	matrix->head = NULL;
 	matrix->tail = NULL;
 	matrix->pontSpot = 0;
 	matrix->pont = 0;
 	matrix->n_plays = 0;
+	matrix->maxPont = 0;
 	matrix->spotTail = NULL;
 	matrix->spotHead = NULL;
 	matrix->done = false;
